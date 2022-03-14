@@ -19,6 +19,8 @@ class Load {
         void item();
         /* print item in buffer_item */
         void print_item();
+        /* return info ke-i from item ke-n*/
+        string get_info_item(int n, int i);
 };
 
 #endif

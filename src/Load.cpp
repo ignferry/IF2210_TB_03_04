@@ -11,14 +11,12 @@ Load::Load() {
 }
 /* read configuration item and add to buffer_item */
 void Load::item() {
-    //cout << "aaa" << endl;
     string configPath = "./config";
     string itemConfigPath = configPath + "/item.txt";
 
     // read item from config file
     ifstream itemConfigFile(itemConfigPath);
     for(string line; getline(itemConfigFile, line);) {
-        //cout << line << endl;
         string word = "";
         array<string, 4> item_info;
         int i = 0;
@@ -48,4 +46,8 @@ void Load::print_item() {
         }
         cout << endl;
     }
+}
+/* return info ke-i from item ke-n*/
+string Load::get_info_item(int n, int i) {
+    return buffer_item[n][i];
 }
