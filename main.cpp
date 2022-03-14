@@ -3,26 +3,12 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include "./header/Load.hpp"
 
 using namespace std;
 
 int main() {
-  string configPath = "./config";
-  string itemConfigPath = configPath + "/item.txt";
-
-  // read item from config file
-  ifstream itemConfigFile(itemConfigPath);
-  for (string line; getline(itemConfigFile, line);) {
-    cout << line << endl;
-    // do something
-  }
-
-  // read recipes
-  for (const auto &entry :
-       filesystem::directory_iterator(configPath + "/recipe")) {
-    cout << entry.path() << endl;
-    // read from file and do something
-  }
+  Load load;
 
   // sample interaction
   string command;
@@ -54,6 +40,8 @@ int main() {
       // need to handle multiple destinations
       cin >> slotSrc >> slotQty >> slotDest;
       cout << "TODO" << endl;
+    } else if ("EXIT") {
+        break;
     } else {
       // todo
       cout << "Invalid command" << endl;
