@@ -8,12 +8,16 @@ Inventory::~Inventory() {
     delete[] this->item;
 }
 
-Item Inventory::getItem(int inventorySlotID) {
-    return this->item[inventorySlotID];
-}
-
 bool Inventory::isEmptySlot(int inventorySlotID) {
     return this->item[inventorySlotID].getID() == 0;
+}
+
+bool Inventory::isFullSlot(int inventorySlotID) {
+    return this->item[inventorySlotID].getQuantity() == MAX_ITEM;
+}
+
+int Inventory::remainingSlot(int inventorySlotID) {
+    return MAX_ITEM - this->item[inventorySlotID].getQuantity();
 }
 
 void Inventory::borderInventory() {
@@ -38,6 +42,33 @@ void Inventory::showInventory() {
         if (count % 9 == 0) {
             cout << "|" << endl;
             this->borderInventory();
+        }
+    }
+}
+
+void Inventory::give(string name, int quantity) {
+    for (int i = 0; i < INVENTORY_SLOT; i++) {
+        if (this->item[i].getName() == name && !this->isFullSlot(i)) {
+            if (quantity > this->remainingSlot(i)) {
+                quantity -= this->remainingSlot(i);
+                this->item[i].addQuantity(this->remainingSlot(i));
+            } else {
+                this->item[i].addQuantity(quantity);
+                break;
+            }
+        }
+    }
+    if (quantity > 0) {
+        for (int i = 0; i < INVENTORY_SLOT; i++) {
+            if (this->isEmptySlot(i)) {
+                if (quantity > MAX_ITEM) {
+                    quantity -= MAX_ITEM;
+                    this->item[i].addQuantity(MAX_ITEM);
+                } else {
+                    this->item[i].addQuantity(quantity);
+                    break;
+                }
+            }
         }
     }
 }

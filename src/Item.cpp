@@ -18,6 +18,6 @@ int Item::getQuantity() {
     return this->Quantity;
 }
 
-bool Item::operator==(const Item& item) {
-    return this->ID == item.ID;
+void Item::addQuantity(int quantity) {
+    this->Quantity += quantity;
 }

@@ -15,7 +15,7 @@ class Item {
         int getID();
         string getName();
         int getQuantity();
-        bool operator==(const Item& item);
+        void addQuantity(int quantity);
 
 };
 
