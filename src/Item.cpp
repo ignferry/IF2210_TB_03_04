@@ -39,6 +39,10 @@ int Item::getQuantity() {
     return this->Quantity;
 }
 
+void Item::setQuantity(int quantity) {
+    this->Quantity = quantity;
+}
+
 void Item::addQuantity(int quantity) {
     this->Quantity += quantity;
 }

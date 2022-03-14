@@ -21,6 +21,7 @@ class Item {
         string getType();
         void setType(string type);
         int getQuantity();
+        void setQuantity(int quantity);
         void addQuantity(int quantity);
         void subtractQuantity(int quantity);
 

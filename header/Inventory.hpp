@@ -17,12 +17,16 @@ class Inventory {
         Inventory();
         ~Inventory();
         void addItem(int inventorySlotID, string name, string type, int quantity);
+        void subtractItem(int inventorySlotID, int quantity);
+        void deleteItem(int inventorySlotID);
         bool isEmptySlot(int inventorySlotID);
         bool isFullSlot(int inventorySlotID);
         int remainingSlot(int inventorySlotID);
         void borderInventory();
         void showInventory();
+        void giveMessage(int inventorySlotID, string name, int quantity);
         void give(string name, int quantity);
+        void discard(int inventorySlotID, int quantity);
 
 };
 

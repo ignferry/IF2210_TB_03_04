@@ -9,10 +9,21 @@ Inventory::~Inventory() {
 }
 
 void Inventory::addItem(int inventorySlotID, string name, string type, int quantity) {
+    this->item[inventorySlotID].setID(this->item[inventorySlotID].getID(name));
     this->item[inventorySlotID].setName(name);
-    this->item[inventorySlotID].setID(this->item[inventorySlotID].getID(this->item[inventorySlotID].getName()));
     this->item[inventorySlotID].setType(type);
     this->item[inventorySlotID].addQuantity(quantity);
+}
+
+void Inventory::subtractItem(int inventorySlotID, int quantity) {
+    this->item[inventorySlotID].subtractQuantity(quantity);
+}
+
+void Inventory::deleteItem(int inventorySlotID) {
+    this->item[inventorySlotID].setID(0);
+    this->item[inventorySlotID].setName("NaN");
+    this->item[inventorySlotID].setType("NaN");
+    this->item[inventorySlotID].setQuantity(0);
 }
 
 bool Inventory::isEmptySlot(int inventorySlotID) {
@@ -53,14 +64,21 @@ void Inventory::showInventory() {
     }
 }
 
+void Inventory::giveMessage(int inventorySlotID, string name, int quantity) {
+    cout << "Berhasil menambahkan item " << name << " sebanyak " << quantity << " pada slot ID inventory ke-" << inventorySlotID << endl;
+}
+
 void Inventory::give(string name, int quantity) {
     for (int i = 0; i < INVENTORY_SLOT; i++) {
         if (this->item[i].getName() == name && !this->isFullSlot(i)) {
             if (quantity > this->remainingSlot(i)) {
                 quantity -= this->remainingSlot(i);
+                this->giveMessage(i, name, this->remainingSlot(i));
                 this->item[i].addQuantity(this->remainingSlot(i));
             } else {
                 this->item[i].addQuantity(quantity);
+                this->giveMessage(i, name, quantity);
+                quantity = 0;
                 break;
             }
         }
@@ -71,8 +89,10 @@ void Inventory::give(string name, int quantity) {
                 if (quantity > MAX_ITEM) {
                     quantity -= MAX_ITEM;
                     this->addItem(i, name, "NONTOOL", MAX_ITEM);
+                    this->giveMessage(i, name, MAX_ITEM);
                 } else {
                     this->addItem(i, name, "NONTOOL", quantity);
+                    this->giveMessage(i, name, quantity);
                     break;
                 }
             }
@@ -80,8 +100,36 @@ void Inventory::give(string name, int quantity) {
     }
 }
 
+void Inventory::discard(int inventorySlotID, int quantity) {
+    if (this->item[inventorySlotID].getQuantity() > quantity) {
+        this->subtractItem(inventorySlotID, quantity);
+        cout << "Berhasil membuang item " << this->item[inventorySlotID].getName() << " sebanyak " << quantity << " pada slot ID inventory ke-" << inventorySlotID << endl;
+    } else if (this->item[inventorySlotID].getQuantity() == quantity) {
+        cout << "Berhasil menghapus item " << this->item[inventorySlotID].getName() << " pada slot ID inventory ke-" << inventorySlotID << endl;
+        this->deleteItem(inventorySlotID);
+    } else {
+        cout << "Gagal membuang item" << endl;
+    }
+}
+
 int main() {
     Inventory i;
+    i.showInventory();
+    i.give("DIAMOND_PICKAXE", 100);
+    i.showInventory();
+    i.give("DIAMOND_SWORD", 50);
+    i.showInventory();
+    i.give("DIAMOND_PICKAXE", 100);
+    i.showInventory();
+    i.give("DIAMOND_SWORD", 100);
+    i.showInventory();
+    i.give("DIAMOND_PICKAXE", 50);
+    i.showInventory();
+    i.discard(0, 63);
+    i.showInventory();
+    i.discard(1, 64);
+    i.showInventory();
+    i.discard(2, 65);
     i.showInventory();
     return 0;
 }
