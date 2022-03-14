@@ -16,6 +16,7 @@ class Inventory {
     public:
         Inventory();
         ~Inventory();
+        void addItem(int inventorySlotID, string name, string type, int quantity);
         bool isEmptySlot(int inventorySlotID);
         bool isFullSlot(int inventorySlotID);
         int remainingSlot(int inventorySlotID);
