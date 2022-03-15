@@ -39,7 +39,7 @@ int main() {
       // need to handle multiple destinations
       cin >> slotSrc >> slotQty >> slotDest;
       cout << "TODO" << endl;
-    } else if ("EXIT") {
+    } else if (command == "EXIT") {
         break;
     } else {
       // todo
