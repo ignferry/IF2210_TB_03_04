@@ -63,3 +63,7 @@ void Item::addDurability(int durability) {
 void Item::subtractDurability(int durability) {
     this->Durability -= durability;
 }
+
+bool Item::operator==(const Item& item) {
+    return this->ID == item.ID;
+}

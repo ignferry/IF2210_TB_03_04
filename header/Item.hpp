@@ -28,6 +28,7 @@ class Item {
         void setDurability(int durability);
         void addDurability(int durability);
         void subtractDurability(int durability);
+        bool operator==(const Item& item);
 
 };
 

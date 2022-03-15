@@ -44,10 +44,13 @@ int main() {
     } else if (command == "MOVE") {
       string slotSrc;
       int slotQty;
-      string slotDest;
       // need to handle multiple destinations
-      cin >> slotSrc >> slotQty >> slotDest;
-      cout << "TODO" << endl;
+      cin >> slotSrc >> slotQty;
+      string slotDest[slotQty];
+      for (int i = 0; i < slotQty; i++) {
+        cin >> slotDest[i];
+      }
+      inventory.move(slotSrc, slotDest[0]);
     } else if (command == "USE") {
       string inventorySlotID;
       cin >> inventorySlotID;

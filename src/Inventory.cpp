@@ -153,6 +153,29 @@ void Inventory::discard(string strInventorySlotID, int quantity) {
     }
 }
 
+void Inventory::move(string strInventorySlotIDSrc, string strInventorySlotIDDest) {
+    int inventorySlotIDSrc = this->string_to_int(strInventorySlotIDSrc);
+    int inventorySlotIDDest = this->string_to_int(strInventorySlotIDDest);
+    if (this->item[inventorySlotIDSrc].getType() == "NONTOOL" && this->item[inventorySlotIDDest].getType() == "NONTOOL" && this->item[inventorySlotIDSrc] == this->item[inventorySlotIDDest]) {
+        if (!this->isFullSlot(inventorySlotIDDest)) {
+            if (this->item[inventorySlotIDSrc].getQuantity() > this->remainingSlot(inventorySlotIDDest)) {
+                cout << "Berhasil menumpuk item " << this->item[inventorySlotIDDest].getName() << " sebanyak " << this->remainingSlot(inventorySlotIDDest) << " pada slot ID inventory ke-" << inventorySlotIDDest << endl;
+                this->item[inventorySlotIDSrc].subtractQuantity(this->remainingSlot(inventorySlotIDDest));
+                this->item[inventorySlotIDDest].setQuantity(MAX_ITEM);
+                cout << "Tersisa " << this->item[inventorySlotIDSrc].getQuantity() << " " << this->item[inventorySlotIDSrc].getName() << " pada slot ID inventory ke-" << inventorySlotIDSrc << endl;
+            } else {
+                this->item[inventorySlotIDDest].addQuantity(this->item[inventorySlotIDSrc].getQuantity());
+                this->deleteItem(inventorySlotIDSrc);
+                cout << "Berhasil menumpuk item " << this->item[inventorySlotIDDest].getName() << " pada slot ID inventory ke-" << inventorySlotIDDest << endl;
+            }
+        } else {
+            cout << "Destinasi slot ID inventory sudah penuh" << endl;
+        }
+    } else {
+        cout << "Gagal menumpuk item" << endl;
+    }
+}
+
 void Inventory::use(string strInventorySlotID) {
     int inventorySlotID = this->string_to_int(strInventorySlotID);
     if (this->item[inventorySlotID].getType() == "TOOL") {

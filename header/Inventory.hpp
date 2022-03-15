@@ -33,6 +33,7 @@ class Inventory {
         void giveMessage(int inventorySlotID, string name, int quantity);
         void give(string name, int quantity);
         void discard(string strInventorySlotID, int quantity);
+        void move(string strInventorySlotIDSrc, string strInventorySlotIDDest);
         void use(string strInventorySlotID);
 
 };
