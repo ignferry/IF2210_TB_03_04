@@ -161,29 +161,3 @@ void Inventory::use(int inventorySlotID) {
         cout << "Tidak ada item yang dapat digunakan dalam slot ini" << endl;
     }
 }
-
-int main() {
-    Inventory i;
-    i.showInventory();
-    i.give("STICK", 100);
-    i.showInventory();
-    i.give("DIAMOND_PICKAXE", 10);
-    i.showInventory();
-    i.give("STICK", 100);
-    i.showInventory();
-    i.give("STICK", 50);
-    i.showInventory();
-    i.discard(0, 63);
-    i.discard(1, 64);
-    i.discard(2, 65);
-    i.discard(26, 66);
-    i.showInventory();
-    i.use(0);
-    i.use(1);
-    i.use(2);
-    i.showInventory();
-    return 0;
-}
-
-// g++ -std=c++17 .\\src\\Inventory.cpp .\\src\\Item.cpp .\\src\\Load.cpp -o .\\src\\main.exe
-// .\\src\\main
