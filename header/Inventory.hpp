@@ -26,13 +26,14 @@ class Inventory {
         bool isEmptySlot(int inventorySlotID);
         bool isFullSlot(int inventorySlotID);
         int remainingSlot(int inventorySlotID);
+        int string_to_int(string strInventorySlotID);
         void borderInventory();
         void durabilityOutput(int durability);
         void showInventory();
         void giveMessage(int inventorySlotID, string name, int quantity);
         void give(string name, int quantity);
-        void discard(int inventorySlotID, int quantity);
-        void use(int inventorySlotID);
+        void discard(string strInventorySlotID, int quantity);
+        void use(string strInventorySlotID);
 
 };
 

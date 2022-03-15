@@ -40,7 +40,7 @@ int main() {
       string inventorySlotID;
       int itemQty;
       cin >> inventorySlotID >> itemQty;
-      cout << "TODO" << endl;
+      inventory.discard(inventorySlotID, itemQty);
     } else if (command == "MOVE") {
       string slotSrc;
       int slotQty;
@@ -51,7 +51,7 @@ int main() {
     } else if (command == "USE") {
       string inventorySlotID;
       cin >> inventorySlotID;
-      cout << "TODO" << endl;
+      inventory.use(inventorySlotID);
     } else if (command == "CRAFT") {
       cout << "TODO" << endl;
     } else if (command == "EXIT") {

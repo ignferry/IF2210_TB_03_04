@@ -43,6 +43,10 @@ int Inventory::remainingSlot(int inventorySlotID) {
     return MAX_ITEM - this->item[inventorySlotID].getQuantity();
 }
 
+int Inventory::string_to_int(string strInventorySlotID) {
+    return stoi(strInventorySlotID.substr(1, strInventorySlotID.length()));
+}
+
 void Inventory::borderInventory() {
     for (int i = 0; i < 9; i++) {
         string stuff(24, '-');
@@ -136,7 +140,8 @@ void Inventory::give(string name, int quantity) {
     }
 }
 
-void Inventory::discard(int inventorySlotID, int quantity) {
+void Inventory::discard(string strInventorySlotID, int quantity) {
+    int inventorySlotID = this->string_to_int(strInventorySlotID);
     if (this->item[inventorySlotID].getQuantity() > quantity) {
         this->subtractItem(inventorySlotID, quantity);
         cout << "Berhasil membuang item " << this->item[inventorySlotID].getName() << " sebanyak " << quantity << " pada slot ID inventory ke-" << inventorySlotID << endl;
@@ -148,13 +153,14 @@ void Inventory::discard(int inventorySlotID, int quantity) {
     }
 }
 
-void Inventory::use(int inventorySlotID) {
+void Inventory::use(string strInventorySlotID) {
+    int inventorySlotID = this->string_to_int(strInventorySlotID);
     if (this->item[inventorySlotID].getType() == "TOOL") {
         this->item[inventorySlotID].subtractDurability(1);
+        cout << "Berhasil menggunakan item " << this->item[inventorySlotID].getName() << endl;
         if (this->item[inventorySlotID].getDurability() == 0) {
             this->deleteItem(inventorySlotID);
         }
-        cout << "Berhasil menggunakan item " << this->item[inventorySlotID].getName() << endl;
     } else if (this->item[inventorySlotID].getType() == "NONTOOL") {
         cout << "Item " << this->item[inventorySlotID].getName() << " tidak dapat digunakan karena bukan tool" << endl;
     } else {
