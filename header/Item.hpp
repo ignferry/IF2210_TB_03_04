@@ -10,6 +10,7 @@ class Item {
         string Name;
         string Type;
         int Quantity;
+        int Durability;
 
     public:
         Item();
@@ -24,6 +25,8 @@ class Item {
         void setQuantity(int quantity);
         void addQuantity(int quantity);
         void subtractQuantity(int quantity);
+        int getDurability();
+        void setDurability(int durability);
 
 };
 

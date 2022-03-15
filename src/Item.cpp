@@ -5,6 +5,7 @@ Item::Item() {
     this->Name = "NaN";
     this->Type = "NaN";
     this->Quantity = 0;
+    this->Durability = 10;
 }
 
 int Item::getID() {
@@ -49,4 +50,12 @@ void Item::addQuantity(int quantity) {
 
 void Item::subtractQuantity(int quantity) {
     this->Quantity -= quantity;
+}
+
+int Item::getDurability() {
+    return this->Durability;
+}
+
+void Item::setDurability(int durability) {
+    this->Durability = durability;
 }

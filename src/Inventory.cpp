@@ -40,20 +40,39 @@ int Inventory::remainingSlot(int inventorySlotID) {
 
 void Inventory::borderInventory() {
     for (int i = 0; i < 9; i++) {
-        string stuff(20, '-');
+        string stuff(24, '-');
         cout << "+" << stuff;
     }
     cout << "+" << endl;
+}
+
+void Inventory::durabilityOutput(int durability) {
+    int count = 0;
+    cout << BOLDGREEN;
+    while (durability != 0) {
+        if (durability - 2 >= 0) {
+            cout << "I";
+            durability -= 2;
+        } else if (durability - 1 >= 0) {
+            cout << "i";
+            durability -= 1;
+        }
+        count++;
+    }
+    cout << RESET << left << setw(6-count) << " " << " ";
 }
 
 void Inventory::showInventory() {
     this->borderInventory();
     int count = 0;
     for (int i = 0; i < INVENTORY_SLOT; i++) {
-        if (!this->isEmptySlot(i)) {
-            cout << "| " << right << setw(15) << this->item[i].getName() << "/" << left << setw(2) << this->item[i].getQuantity() << " ";
+        if (!this->isEmptySlot(i) && this->item[i].getType() == "NONTOOL") {
+            cout << "| " << right << setw(15) << this->item[i].getName() << "/qty:" << left << setw(2) << this->item[i].getQuantity() << " ";
+        } else if (!this->isEmptySlot(i) && this->item[i].getType() == "TOOL") {
+            cout << "| " << right << setw(15) << this->item[i].getName() << "/";
+            this->durabilityOutput(this->item[i].getDurability());
         } else {
-            string stuff(18, ' ');
+            string stuff(22, ' ');
             cout << "| " << stuff << " "; 
         }
         count++;
@@ -88,7 +107,7 @@ void Inventory::give(string name, int quantity) {
             if (this->isEmptySlot(i)) {
                 if (quantity > MAX_ITEM) {
                     quantity -= MAX_ITEM;
-                    this->addItem(i, name, "NONTOOL", MAX_ITEM);
+                    this->addItem(i, name, "TOOL", MAX_ITEM);
                     this->giveMessage(i, name, MAX_ITEM);
                 } else {
                     this->addItem(i, name, "NONTOOL", quantity);
@@ -110,6 +129,10 @@ void Inventory::discard(int inventorySlotID, int quantity) {
     } else {
         cout << "Gagal membuang item" << endl;
     }
+}
+
+void Inventory::use(int inventorySlotID) {
+    
 }
 
 int main() {
