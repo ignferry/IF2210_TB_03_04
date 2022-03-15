@@ -81,7 +81,7 @@ void Load::read_recipe() {
             // add recipe info to recipe
             recipe.push_back(recipe_info);
         }
-        // add item info to buffer_recipe
+        // add recipe to buffer_recipe
         this->buffer_recipe.push_back(recipe);
     }
 }
