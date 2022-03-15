@@ -13,6 +13,11 @@ Load::Load() {
     this->print_recipe();
     cout << "Load succsesfull" << endl;
 }
+Load::Load(string load) {
+    this->configPath = "./config";
+    this->read_item();
+    this->read_recipe();
+}
 /* read configuration item and add to buffer_item */
 void Load::read_item() {
     string itemConfigPath = this->configPath + "/item.txt";
@@ -126,4 +131,24 @@ string Load::get_result_recipe(int n) const {
 /* return amount result from recipe ke-n*/
 int Load::get_amount_result_recipe(int n) const {
     return stoi(this->buffer_recipe[n][get_row_recipe(n) + 1][1]);
+}
+
+int Load::getID(string name) {
+    vector<array<string, 4>>::iterator it;
+    for (it = this->buffer_item.begin(); it != this->buffer_item.end(); it++) {
+        if ((*it)[1] == name) {
+            break;
+        }
+    }
+    return stoi((*it)[0]);
+}
+
+string Load::getType(string name) {
+    vector<array<string, 4>>::iterator it;
+    for (it = this->buffer_item.begin(); it != this->buffer_item.end(); it++) {
+        if ((*it)[1] == name) {
+            break;
+        }
+    }
+    return (*it)[3];
 }

@@ -15,7 +15,6 @@ class Item {
     public:
         Item();
         int getID();
-        int getID(string name);
         void setID(int id);
         string getName();
         void setName(string name);
@@ -27,6 +26,8 @@ class Item {
         void subtractQuantity(int quantity);
         int getDurability();
         void setDurability(int durability);
+        void addDurability(int durability);
+        void subtractDurability(int durability);
 
 };
 

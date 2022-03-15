@@ -23,6 +23,7 @@ class Load {
     public:
         /* constructor */
         Load();
+        Load(string load);
 
         /* read configuration item and add to buffer_item */
         void read_item();
@@ -49,6 +50,10 @@ class Load {
         string get_result_recipe(int n) const;
         /* return amount result from recipe ke-n*/
         int get_amount_result_recipe(int n) const;
+        /* return item ID from item name */
+        int getID(string name);
+        /* return item type from item name */
+        string getType(string name);
 };
 
 #endif

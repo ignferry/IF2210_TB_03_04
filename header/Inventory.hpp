@@ -4,6 +4,7 @@
 #include <iostream>
 #include <iomanip>
 #include "Item.hpp"
+#include "Load.hpp"
 using namespace std;
 
 #define INVENTORY_SLOT 27
@@ -19,7 +20,7 @@ class Inventory {
     public:
         Inventory();
         ~Inventory();
-        void addItem(int inventorySlotID, string name, string type, int quantity);
+        void addItem(int inventorySlotID, string name, int quantity);
         void subtractItem(int inventorySlotID, int quantity);
         void deleteItem(int inventorySlotID);
         bool isEmptySlot(int inventorySlotID);

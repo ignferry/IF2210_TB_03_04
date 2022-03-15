@@ -8,11 +8,15 @@ Inventory::~Inventory() {
     delete[] this->item;
 }
 
-void Inventory::addItem(int inventorySlotID, string name, string type, int quantity) {
-    this->item[inventorySlotID].setID(this->item[inventorySlotID].getID(name));
+void Inventory::addItem(int inventorySlotID, string name, int quantity) {
+    Load l("load");
+    this->item[inventorySlotID].setID(l.getID(name));
     this->item[inventorySlotID].setName(name);
-    this->item[inventorySlotID].setType(type);
-    this->item[inventorySlotID].addQuantity(quantity);
+    this->item[inventorySlotID].setType(l.getType(name));
+    this->item[inventorySlotID].setQuantity(quantity);
+    if (l.getType(name) == "TOOL") {
+        this->item[inventorySlotID].setDurability(MAX_DURABILITY);
+    }
 }
 
 void Inventory::subtractItem(int inventorySlotID, int quantity) {
@@ -24,6 +28,7 @@ void Inventory::deleteItem(int inventorySlotID) {
     this->item[inventorySlotID].setName("NaN");
     this->item[inventorySlotID].setType("NaN");
     this->item[inventorySlotID].setQuantity(0);
+    this->item[inventorySlotID].setDurability(0);
 }
 
 bool Inventory::isEmptySlot(int inventorySlotID) {
@@ -66,11 +71,13 @@ void Inventory::showInventory() {
     this->borderInventory();
     int count = 0;
     for (int i = 0; i < INVENTORY_SLOT; i++) {
-        if (!this->isEmptySlot(i) && this->item[i].getType() == "NONTOOL") {
-            cout << "| " << right << setw(15) << this->item[i].getName() << "/qty:" << left << setw(2) << this->item[i].getQuantity() << " ";
-        } else if (!this->isEmptySlot(i) && this->item[i].getType() == "TOOL") {
-            cout << "| " << right << setw(15) << this->item[i].getName() << "/";
-            this->durabilityOutput(this->item[i].getDurability());
+        if (!this->isEmptySlot(i)) {
+            if (this->item[i].getType() == "NONTOOL") {
+                cout << "| " << right << setw(15) << this->item[i].getName() << "/qty:" << left << setw(2) << this->item[i].getQuantity() << " ";
+            } else {
+                cout << "| " << right << setw(15) << this->item[i].getName() << "/";
+                this->durabilityOutput(this->item[i].getDurability());
+            }
         } else {
             string stuff(22, ' ');
             cout << "| " << stuff << " "; 
@@ -88,8 +95,9 @@ void Inventory::giveMessage(int inventorySlotID, string name, int quantity) {
 }
 
 void Inventory::give(string name, int quantity) {
+    Load l("load");
     for (int i = 0; i < INVENTORY_SLOT; i++) {
-        if (this->item[i].getName() == name && !this->isFullSlot(i)) {
+        if (l.getType(name) == "NONTOOL" && this->item[i].getName() == name && !this->isFullSlot(i)) {
             if (quantity > this->remainingSlot(i)) {
                 quantity -= this->remainingSlot(i);
                 this->giveMessage(i, name, this->remainingSlot(i));
@@ -105,14 +113,23 @@ void Inventory::give(string name, int quantity) {
     if (quantity > 0) {
         for (int i = 0; i < INVENTORY_SLOT; i++) {
             if (this->isEmptySlot(i)) {
-                if (quantity > MAX_ITEM) {
-                    quantity -= MAX_ITEM;
-                    this->addItem(i, name, "TOOL", MAX_ITEM);
-                    this->giveMessage(i, name, MAX_ITEM);
+                if (l.getType(name) == "NONTOOL") {
+                    if (quantity > MAX_ITEM) {
+                        quantity -= MAX_ITEM;
+                        this->addItem(i, name, MAX_ITEM);
+                        this->giveMessage(i, name, MAX_ITEM);
+                    } else {
+                        this->addItem(i, name, quantity);
+                        this->giveMessage(i, name, quantity);
+                        break;
+                    }
                 } else {
-                    this->addItem(i, name, "NONTOOL", quantity);
-                    this->giveMessage(i, name, quantity);
-                    break;
+                    quantity -= 1;
+                    this->addItem(i, name, 1);
+                    this->giveMessage(i, name, 1);
+                    if (quantity == 0) {
+                        break;
+                    }
                 }
             }
         }
@@ -132,30 +149,41 @@ void Inventory::discard(int inventorySlotID, int quantity) {
 }
 
 void Inventory::use(int inventorySlotID) {
-    
+    if (this->item[inventorySlotID].getType() == "TOOL") {
+        this->item[inventorySlotID].subtractDurability(1);
+        if (this->item[inventorySlotID].getDurability() == 0) {
+            this->deleteItem(inventorySlotID);
+        }
+        cout << "Berhasil menggunakan item " << this->item[inventorySlotID].getName() << endl;
+    } else if (this->item[inventorySlotID].getType() == "NONTOOL") {
+        cout << "Item " << this->item[inventorySlotID].getName() << " tidak dapat digunakan karena bukan tool" << endl;
+    } else {
+        cout << "Tidak ada item yang dapat digunakan dalam slot ini" << endl;
+    }
 }
 
 int main() {
     Inventory i;
     i.showInventory();
-    i.give("DIAMOND_PICKAXE", 100);
+    i.give("STICK", 100);
     i.showInventory();
-    i.give("DIAMOND_SWORD", 50);
+    i.give("DIAMOND_PICKAXE", 10);
     i.showInventory();
-    i.give("DIAMOND_PICKAXE", 100);
+    i.give("STICK", 100);
     i.showInventory();
-    i.give("DIAMOND_SWORD", 100);
-    i.showInventory();
-    i.give("DIAMOND_PICKAXE", 50);
+    i.give("STICK", 50);
     i.showInventory();
     i.discard(0, 63);
-    i.showInventory();
     i.discard(1, 64);
-    i.showInventory();
     i.discard(2, 65);
+    i.discard(26, 66);
+    i.showInventory();
+    i.use(0);
+    i.use(1);
+    i.use(2);
     i.showInventory();
     return 0;
 }
 
-// g++ -std=c++17 .\\src\\Inventory.cpp .\\src\\Item.cpp -o .\\src\\main.exe
+// g++ -std=c++17 .\\src\\Inventory.cpp .\\src\\Item.cpp .\\src\\Load.cpp -o .\\src\\main.exe
 // .\\src\\main
