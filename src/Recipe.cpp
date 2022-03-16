@@ -26,6 +26,23 @@ Recipe::Recipe(int row, int col) {
 }
 
 
+// CCTOR
+Recipe::Recipe(Recipe &r) {
+// cctor Recipe
+    this->row = r.row;
+    this->col = r.col;
+    this->resultName = r.resultName;
+    this->resultQuantity = r.resultQuantity;
+    this->ingredients = new string*[this->row];
+    for (int i = 0; i < this->row; i++) {
+        this->ingredients[i] = new string[this->col];
+        for (int j = 0; j < this->col; j++) {
+            this->ingredients[i][j] = r.ingredients[i][j];
+        }
+    }
+}
+
+
 // DESTRUCTOR
 Recipe::~Recipe() {
     for (int i = 0; i < this->row; i++) {

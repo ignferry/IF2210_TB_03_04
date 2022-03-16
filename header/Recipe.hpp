@@ -19,6 +19,11 @@ class Recipe {
         // Custom ctor Recipe dengan row dan col sesuai dengan parameter
 
 
+        // CCTOR
+        Recipe(Recipe &r);
+        // cctor Recipe
+
+
         // DESTRUCTOR
         ~Recipe();
 
