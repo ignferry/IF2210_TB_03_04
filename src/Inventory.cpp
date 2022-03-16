@@ -4,17 +4,21 @@ Inventory::Inventory() {
     this->item = new Item[INVENTORY_SLOT];
 }
 
+Inventory::Inventory(Load *load) {
+    this->l = load;
+    this->item = new Item[INVENTORY_SLOT];
+}
+
 Inventory::~Inventory() {
     delete[] this->item;
 }
 
 void Inventory::addItem(int inventorySlotID, string name, int quantity) {
-    Load l("load");
-    this->item[inventorySlotID].setID(l.getID(name));
+    this->item[inventorySlotID].setID(l->getID(name));
     this->item[inventorySlotID].setName(name);
-    this->item[inventorySlotID].setType(l.getType(name));
+    this->item[inventorySlotID].setType(l->getType(name));
     this->item[inventorySlotID].setQuantity(quantity);
-    if (l.getType(name) == "TOOL") {
+    if (l->getType(name) == "TOOL") {
         this->item[inventorySlotID].setDurability(MAX_DURABILITY);
     }
 }
@@ -99,9 +103,8 @@ void Inventory::giveMessage(int inventorySlotID, string name, int quantity) {
 }
 
 void Inventory::give(string name, int quantity) {
-    Load l("load");
     for (int i = 0; i < INVENTORY_SLOT; i++) {
-        if (l.getType(name) == "NONTOOL" && this->item[i].getName() == name && !this->isFullSlot(i)) {
+        if (l->getType(name) == "NONTOOL" && this->item[i].getName() == name && !this->isFullSlot(i)) {
             if (quantity > this->remainingSlot(i)) {
                 quantity -= this->remainingSlot(i);
                 this->giveMessage(i, name, this->remainingSlot(i));
@@ -117,7 +120,7 @@ void Inventory::give(string name, int quantity) {
     if (quantity > 0) {
         for (int i = 0; i < INVENTORY_SLOT; i++) {
             if (this->isEmptySlot(i)) {
-                if (l.getType(name) == "NONTOOL") {
+                if (l->getType(name) == "NONTOOL") {
                     if (quantity > MAX_ITEM) {
                         quantity -= MAX_ITEM;
                         this->addItem(i, name, MAX_ITEM);

@@ -23,7 +23,6 @@ class Load {
     public:
         /* constructor */
         Load();
-        Load(string load);
 
         /* read configuration item and add to buffer_item */
         void read_item();

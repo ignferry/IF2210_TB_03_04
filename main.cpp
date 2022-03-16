@@ -10,8 +10,8 @@
 using namespace std;
 
 int main() {
-  Inventory inventory;
   Load load;
+  Inventory inventory(&load);
 
   // sample interaction
   string command;

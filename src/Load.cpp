@@ -8,15 +8,8 @@ Load::Load() {
     this->configPath = "./config";
     cout << "Loading..." << endl;
     this->read_item();
-    this->print_item();
     this->read_recipe();
-    this->print_recipe();
     cout << "Load succsesfull" << endl;
-}
-Load::Load(string load) {
-    this->configPath = "./config";
-    this->read_item();
-    this->read_recipe();
 }
 /* read configuration item and add to buffer_item */
 void Load::read_item() {

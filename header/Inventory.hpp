@@ -16,9 +16,11 @@ using namespace std;
 class Inventory {
     private:
         Item* item;
+        Load* l;
 
     public:
         Inventory();
+        Inventory(Load *l);
         ~Inventory();
         void addItem(int inventorySlotID, string name, int quantity);
         void subtractItem(int inventorySlotID, int quantity);
