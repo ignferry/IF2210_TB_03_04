@@ -12,7 +12,7 @@ all: compile test check
 # compile:
 # 	g++ -std=c++17 -o $(EXECUTABLE_FILENAME) $(SRCS)
 compile:
-	g++ -std=c++17 main.cpp ./src/Inventory.cpp ./src/Item.cpp ./src/Load.cpp -o main
+	g++ -std=c++17 main.cpp ./src/Inventory.cpp ./src/Item.cpp ./src/Load.cpp ./src/Export.cpp -o main
 
 run:
 	./main

@@ -6,6 +6,7 @@
 #include "./header/Inventory.hpp"
 #include "./header/Item.hpp"
 #include "./header/Load.hpp"
+#include "./header/Export.hpp"
 
 using namespace std;
 
@@ -17,16 +18,9 @@ int main() {
   string command;
   while (cin >> command) {
     if (command == "EXPORT") {
-      string outputPath;
-      cin >> outputPath;
-      ofstream outputFile(outputPath);
-
-      // hardcode for first test case
-      outputFile << "21:10" << endl;
-      outputFile << "6:1" << endl;
-      for (int i = 2; i < 27; i++) {
-        outputFile << "0:0" << endl;
-      }
+      string fileName;
+      cin >> fileName;
+      Export ekspor(fileName, &inventory);
 
       cout << "Exported" << endl;
     } else if (command == "SHOW") {
