@@ -38,6 +38,9 @@ class Inventory {
         void move(string strInventorySlotIDSrc, string strInventorySlotIDDest);
         void use(string strInventorySlotID);
 
+        /* return attribute array of item*/
+        Item* get_items() const;
+
 };
 
 #endif

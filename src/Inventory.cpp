@@ -193,3 +193,8 @@ void Inventory::use(string strInventorySlotID) {
         cout << "Tidak ada item yang dapat digunakan dalam slot ini" << endl;
     }
 }
+
+/* return attribute array of item*/
+Item* Inventory::get_items() const {
+    return this->item;
+}
