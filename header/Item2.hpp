@@ -15,6 +15,7 @@ class Item {
         // Constructor
         Item();
         Item(int ID, string Name, string Type, int Quantity);
+        virtual ~Item();
 
         // Setter Getter
         int getID() const;
@@ -34,7 +35,7 @@ class Item {
         void subtractQuantity(int quantity);
 
         // Comparison
-        virtual bool operator==(const Item& item) = 0;
+        virtual bool operator==(const Item& item);
 };
 
 class Non_Tool : public Item {
@@ -43,6 +44,7 @@ class Non_Tool : public Item {
         Non_Tool();
         Non_Tool(int ID, string name, int Quantity);
         bool operator==(const Non_Tool& nt);
+        virtual ~Non_Tool();
 };
 
 class Tool : public Item {
@@ -52,6 +54,7 @@ class Tool : public Item {
         // Constructor
         Tool();
         Tool(int ID, string name, int Durability);
+        virtual ~Tool();
 
         // Setter Getter
         int getDurability() const;

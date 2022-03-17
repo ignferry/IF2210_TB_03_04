@@ -9,6 +9,15 @@ Item::Item() {
     this->Quantity = 0;
 }
 
+Item::Item(int ID, string name, string Type, int Quantity){
+    this->ID = ID;
+    this->Name = name;
+    this->Type = Type;
+    this->Quantity = Quantity;
+}
+
+Item::~Item(){};
+
 int Item::getID() const{
     return this->ID;
 }
@@ -51,13 +60,11 @@ void Item::subtractQuantity(int quantity) {
 
 /* 2. TOOL ITEM MODULE Implementations */
 
-Non_Tool::Non_Tool() : Item(0,"NaN","Non Tool",0){
+Non_Tool::Non_Tool() : Item(0,"NaN","Non Tool",0){};
 
-}
+Non_Tool::Non_Tool(int ID, string name, int Quantity) : Item(ID,name,"Non Tool",Quantity){};
 
-Non_Tool::Non_Tool(int ID, string name, int Quantity) : Item(ID,name,"Non Tool",Quantity){
-    
-}
+Non_Tool::~Non_Tool(){};
 
 /* 3. TOOL ITEM MODULE Implementations */
 
@@ -68,6 +75,8 @@ Tool::Tool() : Item(0,"NaN","Tool",0){
 Tool::Tool(int ID, string name, int Durability) : Item(ID, name, "Tool", 1){
     this->Durability = Durability;
 }
+
+Tool::~Tool(){};
 
 int Tool::getDurability() const{
     return this->Durability;
@@ -90,9 +99,8 @@ bool Item::operator==(const Item& item) {
 }
 
 bool Non_Tool::operator==(const Non_Tool& item){
-    bool same = Item::this == item;
-
+    return Item::operator==(item);
+}
 bool Tool::operator==(const Tool& item){
-    bool same = Item::this == item;
-    return same && this->Durability == t.Durability;
+    return Item::operator==(item) && this->Durability == item.Durability;
 }
