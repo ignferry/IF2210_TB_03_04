@@ -7,6 +7,7 @@
 #include "./header/Item.hpp"
 #include "./header/Load.hpp"
 #include "./header/Export.hpp"
+#include "./header/RecipeList.hpp"
 
 using namespace std;
 

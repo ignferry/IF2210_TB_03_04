@@ -2,6 +2,7 @@
 #define __RECIPE_HPP__
 
 #include <string>
+#include <iostream>
 using namespace std;
 
 class Recipe {
@@ -20,7 +21,7 @@ class Recipe {
 
 
         // CCTOR
-        Recipe(Recipe &r);
+        Recipe(const Recipe &r);
         // cctor Recipe
 
 
@@ -53,6 +54,9 @@ class Recipe {
         // Mengembalikan jumlah hasil crafting
         void setResultQuantity(int quantity);
         // Mengubah jumlah hasil crafting menjadi quantity
+
+        void printRecipe();
+        // Menampilkan informasi dari recipe
 };
 
 #endif

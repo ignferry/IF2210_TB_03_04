@@ -27,7 +27,7 @@ Recipe::Recipe(int row, int col) {
 
 
 // CCTOR
-Recipe::Recipe(Recipe &r) {
+Recipe::Recipe(const Recipe &r) {
 // cctor Recipe
     this->row = r.row;
     this->col = r.col;
@@ -96,4 +96,16 @@ const int Recipe::getResultQuantity(){
 void Recipe::setResultQuantity(int quantity){
 // Mengubah jumlah hasil crafting menjadi quantity
     this->resultQuantity = quantity;
+}
+
+void Recipe::printRecipe() {
+    // Menampilkan informasi dari recipe
+    cout << "Untuk membuat " << this->resultQuantity << " buah " << this->resultName << " dibutuhkan: " << endl;
+    for (int i = 0; i < this->row; i++) {
+        for (int j = 0; j < this->col; j++) {
+            cout << ingredients[i][j] << " ";
+        }
+        cout << endl;
+    }
+    cout << endl;
 }
