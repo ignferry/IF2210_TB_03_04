@@ -9,13 +9,17 @@ class Item {
     private:
         int ID;
         string Name;
-        string Type;
-        int Quantity;
 
     public:
         // Constructor
         Item();
-        Item(int ID, string Name, string Type, int Quantity);
+        Item(int ID, string Name);
+
+        // Deep Copy
+        virtual Item* deepCopy() const;
+        // Mengembalikan pointer to item yang menunjuk pada salinan dari item dan child object
+
+        // Destuctor
         virtual ~Item();
 
         // Setter Getter
@@ -25,15 +29,20 @@ class Item {
         string getName() const;
         void setName(string name);
 
-        string getType() const;
-        void setType(string type);
+        virtual string getType() const = 0;
         
-        int getQuantity() const;
-        virtual void setQuantity(int quantity) = 0;
+        virtual int getQuantity() const = 0;
+        virtual void setQuantity(int quantity);
+
+        virtual string getVariant() const;
+        virtual void setVariant(string Variant);
+
+        virtual int getDurability() const;
+        virtual void setDurability(int durability);
 
         // Modifier
-        virtual void addQuantity(int quantity) = 0;
-        virtual void subtractQuantity(int quantity) = 0;
+        virtual void addQuantity(int quantity);
+        virtual void subtractQuantity(int quantity);
 
         // Comparison
         virtual bool operator==(const Item& item);
@@ -41,17 +50,25 @@ class Item {
 
 class Non_Tool : public Item {
     private:
+        int Quantity;
         string Variant;
     public:
         // Constructor
         Non_Tool();
         Non_Tool(int ID, string name, int Quantity, string Variant);
+
+        // Deep Copy
+        Item* deepCopy() const;
+
         bool operator==(const Non_Tool& nt);
-        virtual ~Non_Tool();
 
         // Setter Getter
+        string getType() const;
+
         string getVariant() const;
         void setVariant(string Variant);
+
+        int getQuantity() const;
 
         // Modifier
         void setQuantity(int quantity);
@@ -66,12 +83,12 @@ class Tool : public Item {
         // Constructor
         Tool();
         Tool(int ID, string name, int Durability);
-        virtual ~Tool();
+
+        Item* deepCopy() const;
 
         // Setter Getter
-        void setQuantity(int quantity);
-        void addQuantity(int quantity);
-        void subtractQuantity(int quantity);
+        string getType() const;
+        int getQuantity() const;
 
         int getDurability() const;
         void setDurability(int durability);

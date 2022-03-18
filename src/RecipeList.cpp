@@ -62,29 +62,23 @@ void RecipeList::setRecipesConfiguration(string directory) {
 Recipe RecipeList::searchRecipe(string itemName){
 // Mengembalikan recipe dengan nama itemName
     Recipe r;
-    vector<Recipe>::iterator it = this->recipes.begin();
     for (auto itr : this->recipes) {
         if (itr.getResultName() == itemName) {
             Recipe r(itr);
             return r;
         }
     }
+    // Nanti harus ada exception jika tidak ketemu
     return r;
 }
 
 void RecipeList::printRecipe(string itemName) {
 // Menampilkan recipe dengan nama itemName
 // Jika tidak ditemukan, tidak melakukan apapun
-    vector<Recipe>::iterator it = this->recipes.begin();
-    while (it != this->recipes.end() && it->getResultName() != itemName) {
-        it++;
-    }
-    if (it != this->recipes.end()) {
-        it->printRecipe();
-    }
+    searchRecipe(itemName).printRecipe();
 }
 
-tuple<string, int> RecipeList::searchCraftableItem(Crafting c) {
+tuple<string, int> RecipeList::searchCraftableItem(Crafting &c) {
 // Mencari nama item yang dapat di-craft dengan konfigurasi pada c
 // Jika tidak ada item yang dapat di-craft, mengembalikan NULL
     for (auto itr : this->recipes) {
@@ -92,4 +86,6 @@ tuple<string, int> RecipeList::searchCraftableItem(Crafting c) {
             return make_tuple(itr.getResultName(), itr.getResultQuantity());
         }
     }
+    // Mungkin nanti harus ada exception jika tidak ketemu
+    return make_tuple("",0);
 }

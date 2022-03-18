@@ -5,15 +5,11 @@
 Item::Item() {
     this->ID = 0;
     this->Name = "NaN";
-    this->Type = "NaN";
-    this->Quantity = 0;
 }
 
-Item::Item(int ID, string name, string Type, int Quantity){
+Item::Item(int ID, string name){
     this->ID = ID;
     this->Name = name;
-    this->Type = Type;
-    this->Quantity = Quantity;
 }
 
 Item::~Item(){};
@@ -34,45 +30,54 @@ void Item::setName(string name) {
     this->Name = name;
 }
 
-string Item::getType() const{
-    return this->Type;
-}
-
-void Item::setType(string type) {
-    this->Type = type;
-    // Exception tipe hanya 2
-}
-
-int Item::getQuantity() const{
-    return this->Quantity;
-}
-
 void Item::setQuantity(int quantity) {
-    this->Quantity = quantity;
-    // No Exception
+    // No modifiable quantity Exception
+}
+
+string Item::getVariant() const {
+    // No variant Exception
+    return NULL;
+}
+
+void Item::setVariant(string Variant) {
+    // No variant Exception
+}
+
+int Item::getDurability() const {
+    // No durability exception
+    return 0;
+} 
+
+void Item::setDurability(int durability) {
+    // No durability Exception
 }
 
 void Item::addQuantity(int quantity) {
-    this->Quantity += quantity;
-    // No Exception
+    // No modifiable quantity Exception
 }
 
 void Item::subtractQuantity(int quantity) {
-    this->Quantity -= quantity;
-    // No Exception
+    // No modifiable quantity Exception
 }
 
 /* 2. TOOL ITEM MODULE Implementations */
 
-Non_Tool::Non_Tool() : Item(0,"NaN","Non Tool",0){
+Non_Tool::Non_Tool() : Item(0,"NaN"){
     this->Variant = "-";
 };
 
-Non_Tool::Non_Tool(int ID, string name, int Quantity, string Variant) : Item(ID,name,"Non Tool",Quantity){
+Non_Tool::Non_Tool(int ID, string name, int Quantity, string Variant) : Item(ID,name){
+    this->Quantity = Quantity;
     this->Variant = Variant;
 }
 
-Non_Tool::~Non_Tool(){};
+Item* Non_Tool::deepCopy() const {
+    return new Non_Tool(*this);
+}
+
+string Non_Tool::getType() const {
+    return "NONTOOL";
+}
 
 string Non_Tool::getVariant() const{
     return this->Variant;
@@ -83,30 +88,40 @@ void Non_Tool::setVariant(string Variant){
 }
 
 void Non_Tool::setQuantity(int quantity){
-    this->Item::setQuantity(quantity);
+    this->Quantity = quantity;
     // Exception Non_Tool 0 <= Q <= 64
 }
 void Non_Tool::addQuantity(int quantity){
-    this->Item::addQuantity(quantity);
+    this->Quantity += quantity;
     // Exception Non_Tool 0 <= Q <= 64
 }
 void Non_Tool::subtractQuantity(int quantity){
-    this->Item::subtractQuantity(quantity);
+    this->Quantity -= quantity;
     // Exception Non_Tool 0 <= Q <= 64
 }
 
 /* 3. TOOL ITEM MODULE Implementations */
 
-Tool::Tool() : Item(0,"NaN","Tool",0){
+Tool::Tool() : Item(0,"NaN"){
     this->Durability = 0;
 }
 
-Tool::Tool(int ID, string name, int Durability) : Item(ID, name, "Tool", 1){
+Tool::Tool(int ID, string name, int Durability) : Item(ID, name){
     this->Durability = Durability;
     // Exception 0 <= D <= 10
 }
 
-Tool::~Tool(){};
+Item* Tool::deepCopy() const {
+    return new Tool(*this);
+}
+
+string Tool::getType() const {
+    return "TOOL";
+}
+
+int Tool::getQuantity() const {
+    return 1;
+}
 
 int Tool::getDurability() const{
     return this->Durability;
@@ -127,27 +142,13 @@ void Tool::subtractDurability(int durability) {
     // Exception 0 <= D <= 10
 }
 
-void Tool::setQuantity(int quantity){
-    this->Item::setQuantity(quantity);
-    // Exception Non_Tool 0 <= Q <= 1
-}
-void Tool::addQuantity(int quantity){
-    this->Item::addQuantity(quantity);
-    // Exception Non_Tool 0 <= Q <= 1
-}
-void Tool::subtractQuantity(int quantity){
-    this->Item::subtractQuantity(quantity);
-    // Exception Non_Tool 0 <= Q <= 1
-}
-
-
 // 4. Comperator Similarity
 bool Item::operator==(const Item& item) {
-    return this->ID == item.ID && this->Name == item.Name && this->Type == item.Type && this-> Quantity == item.Quantity;
+    return this->ID == item.ID && this->Name == item.Name;
 }
 
 bool Non_Tool::operator==(const Non_Tool& item){
-    return Item::operator==(item) && this->Variant == item.Variant;
+    return Item::operator==(item) && this->Quantity == item.Quantity && this->Variant == item.Variant;
 }
 bool Tool::operator==(const Tool& item){
     return Item::operator==(item) && this->Durability == item.Durability;

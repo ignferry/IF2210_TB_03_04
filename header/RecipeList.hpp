@@ -31,7 +31,7 @@ class RecipeList {
         void printRecipe(string itemName);
         // Menampilkan recipe dengan nama itemName
 
-        tuple<string, int> searchCraftableItem(Crafting c);
+        tuple<string, int> searchCraftableItem(Crafting &c);
         // Mencari nama item yang dapat di-craft dengan konfigurasi pada c
         // Jika tidak ada item yang dapat di-craft, mengembalikan NULL
 };

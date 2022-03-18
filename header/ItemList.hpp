@@ -1,8 +1,11 @@
 #ifndef __ITEM_LIST_HPP__
 #define __ITEM_LIST_HPP__
 
-#include "Item.hpp"
+#include "Item2.hpp"
 #include <vector>
+#include <fstream>
+#include <iostream>
+#include <filesystem>
 
 using namespace std;
 
@@ -25,8 +28,10 @@ class ItemList {
         void setItemsConfiguration(string directory);
         // Mengisi vector item sesuai dengan konfigurasi pada directory
 
-        Item* searchItem(string itemName);
+        Item* createItem(string itemName);
         // Mengembalikan pointer to objek Item dengan nama itemName
+
+        void printItems() const;
 };
 
 #endif
