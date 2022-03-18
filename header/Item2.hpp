@@ -3,6 +3,7 @@
 
 #include <iostream>
 using namespace std;
+#define MAX_DURABILITY 10
 
 class Item {
     private:
@@ -28,23 +29,34 @@ class Item {
         void setType(string type);
         
         int getQuantity() const;
-        void setQuantity(int quantity);
+        virtual void setQuantity(int quantity) = 0;
 
         // Modifier
-        void addQuantity(int quantity);
-        void subtractQuantity(int quantity);
+        virtual void addQuantity(int quantity) = 0;
+        virtual void subtractQuantity(int quantity) = 0;
 
         // Comparison
         virtual bool operator==(const Item& item);
 };
 
 class Non_Tool : public Item {
+    private:
+        string Variant;
     public:
         // Constructor
         Non_Tool();
-        Non_Tool(int ID, string name, int Quantity);
+        Non_Tool(int ID, string name, int Quantity, string Variant);
         bool operator==(const Non_Tool& nt);
         virtual ~Non_Tool();
+
+        // Setter Getter
+        string getVariant() const;
+        void setVariant(string Variant);
+
+        // Modifier
+        void setQuantity(int quantity);
+        void addQuantity(int quantity);
+        void subtractQuantity(int quantity);
 };
 
 class Tool : public Item {
@@ -57,10 +69,14 @@ class Tool : public Item {
         virtual ~Tool();
 
         // Setter Getter
-        int getDurability() const;
-        void setDurability(int quantity);
+        void setQuantity(int quantity);
+        void addQuantity(int quantity);
+        void subtractQuantity(int quantity);
 
-        // M0difier
+        int getDurability() const;
+        void setDurability(int durability);
+
+        // Modifier
         void addDurability(int durability);
         void subtractDurability(int durability);
         bool operator==(const Tool& t);

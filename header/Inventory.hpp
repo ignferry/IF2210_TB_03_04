@@ -9,7 +9,6 @@ using namespace std;
 
 #define INVENTORY_SLOT 27
 #define MAX_ITEM 64
-#define MAX_DURABILITY 10
 #define RESET "\033[0m"
 #define BOLDGREEN "\033[1m\033[32m"
 
