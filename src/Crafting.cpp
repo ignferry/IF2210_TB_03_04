@@ -1,14 +1,19 @@
-#include "../header/Crafting.hpp"
+#include "Crafting.hpp"
 #include <iostream>
 
 using namespace std;
 
 Crafting::Crafting()
 {
-    this->craftArr = new Item *[3];
+    this->craftArr = new Item **[3];
     for (int i = 0; i < 3; i++)
     {
-        this->craftArr[i] = new Item[3];
+        this->craftArr[i] = new Item *[3];
+        for (int j = 0; j < 3; j++)
+        {
+            Non_Tool *a = new Non_Tool();
+            this->craftArr[i][j] = a;
+        }
     }
     rowEff = 0;
     colEff = 0;
@@ -16,10 +21,14 @@ Crafting::Crafting()
 
 Crafting::Crafting(const Crafting &c)
 {
-    this->craftArr = new Item *[3];
+    this->craftArr = new Item **[3];
     for (int i = 0; i < 3; i++)
     {
-        this->craftArr[i] = c.craftArr[i];
+        this->craftArr[i] = new Item *[3];
+        for (int j = 0; j < 3; j++)
+        {
+            this->craftArr[i][j] = c.craftArr[i][j];
+        }
     }
     rowEff = c.rowEff;
     colEff = c.colEff;
@@ -41,7 +50,7 @@ void Crafting::checkRow()
     {
         for (int j = 0; j < 3; j++)
         {
-            if (this->craftArr[i][j].getName() != "")
+            if (this->craftArr[i][j]->getName() != "")
             {
                 row++;
                 break;
@@ -58,7 +67,7 @@ void Crafting::checkCol()
     {
         for (int i = 0; i < 3; i++)
         {
-            if (this->craftArr[i][j].getName() != "")
+            if (this->craftArr[i][j]->getName() != "")
             {
                 col++;
                 break;
@@ -80,7 +89,7 @@ int Crafting::getRow()
 
 bool Crafting::isSlotEmpty(int row, int col)
 {
-    return (this->craftArr[row][col].getName() == "");
+    return (this->craftArr[row][col]->getName() == "");
 }
 
 void Crafting::showCraftTable()
@@ -96,24 +105,24 @@ void Crafting::showCraftTable()
             }
             else
             {
-                cout << "[" << this->craftArr[i][j].getName() << "] ";
+                cout << "[" << this->craftArr[i][j]->getName() << "] ";
             }
         }
         cout << endl;
     }
 }
 
-void Crafting::addItem(Item I, int row, int col)
+void Crafting::addItem(Item *I, int row, int col)
 {
     this->craftArr[row][col] = I;
-    this->checkCol();
+    // this->checkCol();
     this->checkRow();
 }
 
 void Crafting::discardItem(int row, int col)
 {
-    Item *I = new Item();
-    this->craftArr[row][col] = *I;
+    Non_Tool *I = new Non_Tool();
+    this->craftArr[row][col] = I;
     this->checkCol();
     this->checkRow();
 }
@@ -125,7 +134,7 @@ bool Crafting::operator==(Recipe r)
     {
         for (int j = 0; j < 3; j++)
         {
-            if (this->craftArr[i][j].getName() != r.getIngredientsAt(i, j))
+            if (this->craftArr[i][j]->getName() != r.getIngredientsAt(i, j))
             {
                 flag = false;
             }
@@ -167,7 +176,20 @@ bool Crafting::checkSimetri(Recipe r)
         }
     }
 
-    return tes == r;
+    int maxVer = 3 - this->getRow();
+    int maxHor = 3 - this->getCol();
+    for (int i = -1 * maxVer; i <= maxVer; i++)
+    {
+        for (int j = -1 * maxHor; j <= maxHor; j++)
+        {
+            // cout << i << " " << j << endl;
+            if (tes.checkTranslation(r, i, j))
+            {
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 bool Crafting::configurationCheck(Recipe r)
@@ -178,19 +200,64 @@ bool Crafting::configurationCheck(Recipe r)
     }
     else
     {
-        int maxVer = 3 - r.getRow();
-        int maxHor = 3 - r.getCol();
+        int maxVer = 3 - this->getRow();
+        int maxHor = 3 - this->getCol();
 
         for (int i = -1 * maxVer; i <= maxVer; i++)
         {
             for (int j = -1 * maxHor; j <= maxHor; j++)
             {
+                // cout << i << " " << j << endl;
                 if (this->checkTranslation(r, i, j))
                 {
                     return true;
                 }
             }
         }
+    }
+    return false;
+}
+
+bool Crafting::isAllTool()
+{
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            if (this->craftArr[i][j]->getType() != "Tool" && this->craftArr[i][j]->getName() != "")
+            {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+bool Crafting::isAllTheSameTool()
+{
+    if (this->isAllTool())
+    {
+        string temp = "none";
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+
+                // cout << temp << endl;
+                if (this->craftArr[i][j]->getName() != "" && temp == "none")
+                {
+                    temp = this->craftArr[i][j]->getName();
+                }
+                else if (this->craftArr[i][j]->getName() != "" && temp != "none")
+                {
+                    if (temp != this->craftArr[i][j]->getName())
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
     return false;
 }
