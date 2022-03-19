@@ -5,98 +5,103 @@
 using namespace std;
 #define MAX_DURABILITY 10
 
-class Item {
-    private:
-        int ID;
-        string Name;
+class Item
+{
+private:
+    int ID;
+    string Name;
 
-    public:
-        // Constructor
-        Item();
-        Item(int ID, string Name);
+public:
+    // Constructor
+    Item();
+    Item(int ID, string Name);
 
-        // Deep Copy
-        virtual Item* deepCopy() const;
-        // Mengembalikan pointer to item yang menunjuk pada salinan dari item dan child object
+    // Deep Copy
+    virtual Item *deepCopy() const = 0;
+    // Mengembalikan pointer to item yang menunjuk pada salinan dari item dan child object
 
-        // Destuctor
-        virtual ~Item();
+    // Destuctor
+    virtual ~Item();
 
-        // Setter Getter
-        int getID() const;
-        void setID(int id);
+    // Setter Getter
+    int getID() const;
+    void setID(int id);
 
-        string getName() const;
-        void setName(string name);
+    string getName() const;
+    void setName(string name);
 
-        virtual string getType() const = 0;
-        
-        virtual int getQuantity() const = 0;
-        virtual void setQuantity(int quantity);
+    virtual string getType() const = 0;
 
-        virtual string getVariant() const;
-        virtual void setVariant(string Variant);
+    virtual int getQuantity() const = 0;
+    virtual void setQuantity(int quantity);
 
-        virtual int getDurability() const;
-        virtual void setDurability(int durability);
+    virtual string getVariant() const;
+    virtual void setVariant(string Variant);
 
-        // Modifier
-        virtual void addQuantity(int quantity);
-        virtual void subtractQuantity(int quantity);
+    virtual int getDurability() const;
+    virtual void setDurability(int durability);
 
-        // Comparison
-        virtual bool operator==(const Item& item);
+    // Modifier
+    virtual void addQuantity(int quantity);
+    virtual void subtractQuantity(int quantity);
+
+    // Comparison
+    virtual bool operator==(const Item &item);
 };
 
-class Non_Tool : public Item {
-    private:
-        int Quantity;
-        string Variant;
-    public:
-        // Constructor
-        Non_Tool();
-        Non_Tool(int ID, string name, int Quantity, string Variant);
+class Non_Tool : public Item
+{
+private:
+    int Quantity;
+    string Variant;
 
-        // Deep Copy
-        Item* deepCopy() const;
+public:
+    // Constructor
+    Non_Tool();
+    Non_Tool(int ID, string name, int Quantity, string Variant);
 
-        bool operator==(const Non_Tool& nt);
+    // Deep Copy
+    Item *deepCopy() const;
 
-        // Setter Getter
-        string getType() const;
+    bool operator==(const Non_Tool &nt);
 
-        string getVariant() const;
-        void setVariant(string Variant);
+    // Setter Getter
+    string getType() const;
 
-        int getQuantity() const;
+    string getVariant() const;
+    void setVariant(string Variant);
 
-        // Modifier
-        void setQuantity(int quantity);
-        void addQuantity(int quantity);
-        void subtractQuantity(int quantity);
+    int getQuantity() const;
+
+    // Modifier
+    void setQuantity(int quantity);
+    void addQuantity(int quantity);
+    void subtractQuantity(int quantity);
 };
 
-class Tool : public Item {
-    private:
-        int Durability;
-    public:
-        // Constructor
-        Tool();
-        Tool(int ID, string name, int Durability);
+class Tool : public Item
+{
+private:
+    int Durability;
 
-        Item* deepCopy() const;
+public:
+    // Constructor
+    Tool();
+    Tool(int ID, string name, int Durability);
 
-        // Setter Getter
-        string getType() const;
-        int getQuantity() const;
+    Item *deepCopy() const;
 
-        int getDurability() const;
-        void setDurability(int durability);
+    // Setter Getter
+    string getType() const;
+    int getQuantity() const;
 
-        // Modifier
-        void addDurability(int durability);
-        void subtractDurability(int durability);
-        bool operator==(const Tool& t);
+    int getDurability() const;
+    void setDurability(int durability);
+
+    // Modifier
+    void addDurability(int durability);
+    void subtractDurability(int durability);
+    bool operator==(const Tool &t);
 };
 
 #endif
