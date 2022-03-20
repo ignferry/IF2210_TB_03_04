@@ -96,19 +96,32 @@ void Crafting::showCraftTable()
 {
     for (int i = 0; i < 3; i++)
     {
+        string stuff(24, '-');
+        cout << "+" << stuff;
+    }
+    cout << "+" << endl;
+
+    for (int i = 0; i < 3; i++)
+    {
         for (int j = 0; j < 3; j++)
         {
-            if (this->isSlotEmpty(i, j))
+            if (!this->isSlotEmpty(i, j))
             {
-                cout << "["
-                     << "C " << i * 3 + j << "] ";
+                cout << "|" << right << setw(16) << this->craftArr[i][j]->getName() << setw(8) << " ";
             }
             else
             {
-                cout << "[" << this->craftArr[i][j]->getName() << "] ";
+                string stuff(22, ' ');
+                cout << "| " << stuff << " ";
             }
         }
-        cout << endl;
+        cout << "|" << endl;
+        for (int k = 0; k < 3; k++)
+        {
+            string stuff(24, '-');
+            cout << "+" << stuff;
+        }
+        cout << "+" << endl;
     }
 }
 
