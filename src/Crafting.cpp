@@ -140,9 +140,16 @@ bool Crafting::operator==(Recipe r)
             {
                 return false;
             }
-            else if (this->craftArr[i][j] != NULL && r.getIngredientsAt(i, j) == "")
+            else if (this->craftArr[i][j] != NULL && r.getIngredientsAt(i, j) != "")
             {
-                if (this->craftArr[i][j]->getName() != r.getIngredientsAt(i, j))
+                if (this->craftArr[i][j]->getVariant() != "")
+                {
+                    if (this->craftArr[i][j]->getVariant() != r.getIngredientsAt(i, j))
+                    {
+                        return false;
+                    }
+                }
+                else if (this->craftArr[i][j]->getName() != r.getIngredientsAt(i, j))
                 {
                     return false;
                 }
