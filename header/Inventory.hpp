@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <iomanip>
-#include "Item.hpp"
+#include "Item2.hpp"
 #include "Load.hpp"
 using namespace std;
 
@@ -14,12 +14,11 @@ using namespace std;
 
 class Inventory {
     private:
-        Item* item;
-        Load* l;
+        Item** item;
+        Load* load;
 
     public:
-        Inventory();
-        Inventory(Load *l);
+        Inventory(Load* load);
         ~Inventory();
         void addItem(int inventorySlotID, string name, int quantity);
         void subtractItem(int inventorySlotID, int quantity);
@@ -37,8 +36,8 @@ class Inventory {
         void move(string strInventorySlotIDSrc, string strInventorySlotIDDest);
         void use(string strInventorySlotID);
 
-        /* return attribute array of item*/
-        Item* get_items() const;
+        /* return attribute array of item */
+        Item** get_items() const;
 
 };
 

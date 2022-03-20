@@ -125,7 +125,7 @@ string Load::get_result_recipe(int n) const {
 int Load::get_amount_result_recipe(int n) const {
     return stoi(this->buffer_recipe[n][get_row_recipe(n) + 1][1]);
 }
-
+/* return item ID from item name */
 int Load::getID(string name) {
     vector<array<string, 4>>::iterator it;
     for (it = this->buffer_item.begin(); it != this->buffer_item.end(); it++) {
@@ -135,7 +135,7 @@ int Load::getID(string name) {
     }
     return stoi((*it)[0]);
 }
-
+/* return item type from item name */
 string Load::getType(string name) {
     vector<array<string, 4>>::iterator it;
     for (it = this->buffer_item.begin(); it != this->buffer_item.end(); it++) {

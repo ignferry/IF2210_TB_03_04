@@ -72,6 +72,16 @@ void Item::subtractQuantity(int quantity)
     // No modifiable quantity Exception
 }
 
+void Item::addDurability(int durability)
+{
+    // No modifiable durability Exception
+}
+
+void Item::subtractDurability(int durability)
+{
+    // No modifiable durability Exception
+}
+
 /* 2. TOOL ITEM MODULE Implementations */
 
 Non_Tool::Non_Tool() : Item(0, "NaN")

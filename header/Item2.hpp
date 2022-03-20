@@ -44,6 +44,8 @@ public:
     // Modifier
     virtual void addQuantity(int quantity);
     virtual void subtractQuantity(int quantity);
+    virtual void addDurability(int durability);
+    virtual void subtractDurability(int durability);
 
     // Comparison
     virtual bool operator==(const Item &item);
