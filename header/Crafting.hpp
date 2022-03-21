@@ -1,7 +1,6 @@
 #ifndef __CRAFTING_HPP__
 #define __CRAFTING_HPP__
 
-#include <string>
 #include <iomanip>
 #include "Item2.hpp"
 #include "Recipe.hpp"
@@ -15,23 +14,42 @@ private:
     int colEff;
 
 public:
+    // CONSTRUCTOR
     Crafting();
+
+    // COPY CONSTRUCTOR
     Crafting(const Crafting &c);
+
+    // DESTRUCTOR
     ~Crafting();
+
+    // ATRIBUT METHOD
     void checkRow();
     void checkCol();
     int getRow();
     int getCol();
-    bool isSlotEmpty(int row, int col);      // Mengecek apakah slot position kosong
-    void addItem(Item *I, int row, int col); // Menambahkan item ke slot position
-    void discardItem(int row, int col);      // Membuang item di slot position
+
+    // OTHER METHOD
+    bool isSlotEmpty(int row, int col);
+    // MENGECEK APAKAH SLOT CRAFTING DI KOLOM DAN BARIS MASUKAN KOSONG
+    void addItem(Item *I, int row, int col);
+    // MENAMBAHKAN ITEM KE KOLOM DAN BARIS CRAFTING TABLE
+    void discardItem(int row, int col);
+    // MENGHAPUS ITEM DI KOLOM DAN BARIS CRAFTING TABLE
     void showCraftTable();
-    bool operator==(Recipe r); // Mengecek apakah recipe r sama dengan di craftable
+    // MENAMPILKAN CRAFTING TABLE
+    bool operator==(Recipe r);
+    // MENGECEK KONFIGURASI CRAFTING TABLE DENGAN RECIPE APAKAH SAMA PERSIS ATAU TIDAK
     bool checkTranslation(Recipe r, int ver, int hor);
+    // MENGECEK SETIAP TRANSLASI DARI CRAFTING TABLE DENGAN RECIPE
     bool checkSimetri(Recipe r);
+    // MENGECEK SIMETRI DARI CRAFTING TABLE DENGAN RECIPE
     bool configurationCheck(Recipe r);
+    // MENGECEK SEMUA KEMUNGKINAN CONFIGURASI CRAFTING TABLE DENGAN RECIPE
     bool isAllTool();
+    // MENGECEK APAKAH SEMUA ITEM DI CRAFTING TABLE ADALAH TOOL
     bool isAllTheSameTool();
+    // MENGECEK APAKAH SEMUA ITEM DI CRAFTING TABLE ADALAH TOOL YANG SAMA
 };
 
 #endif

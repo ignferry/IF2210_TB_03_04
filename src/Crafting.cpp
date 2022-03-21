@@ -146,23 +146,28 @@ bool Crafting::operator==(Recipe r)
         for (int j = 0; j < 3; j++)
         {
             if (this->craftArr[i][j] == NULL && r.getIngredientsAt(i, j) != "")
+            // SLOT CRAFTING TABLE KOSONG TETAPI SLOT RECIPE TIDAK KOSONG
             {
                 return false;
             }
             else if (this->craftArr[i][j] != NULL && r.getIngredientsAt(i, j) == "")
+            // SLOT CRAFTING TABLE TIDAK KOSONG TETAPI SLOT RECIPE KOSONG
             {
                 return false;
             }
-            else if (this->craftArr[i][j] != NULL && r.getIngredientsAt(i, j) != "")
+            else if (this->craftArr[i][j] != NULL && r.getIngredientsAt(i, j) != "") // SLOT CRAFTING TABLE DAN RECIPE TIDAK KOSONG
             {
                 if (this->craftArr[i][j]->getVariant() != "")
+                // SLOT CRAFTING TABLE MEMILIKI VARIANT
                 {
                     if (this->craftArr[i][j]->getVariant() != r.getIngredientsAt(i, j))
+                    // MENGECEK VARIAN DARI SLOT CRAFTING TABLE DENGAN SLOT RECIPE DI KOLOM DAN BARIS YANG SESUAI
                     {
                         return false;
                     }
                 }
                 else if (this->craftArr[i][j]->getName() != r.getIngredientsAt(i, j))
+                // SLOT CRAFTING TABLE TIDAK MEMILIKI VARIAN SEHINGGA YANG DICEK ADALAH NAMA ITEMNYA
                 {
                     return false;
                 }
@@ -173,8 +178,10 @@ bool Crafting::operator==(Recipe r)
 }
 
 bool Crafting::checkTranslation(Recipe r, int ver, int hor)
+// VER BERARTI MENGGESER SETIAP ITEM DI SLOT SECARA VERTIKAL, POSITIF KEATAS DAN NEGATIF KEBAWAH
+// HOR BERARTI MENGGESER SETIAP ITEM DI SLOT SECARA HORIZONTAL, POSITIF KEKANAN DAN NEGATIF KEKIRI
 {
-    Crafting tes;
+    Crafting tes; // MEMBUAT DUMMY CRAFTING TABLE
 
     for (int i = 0; i < 3; i++)
     {
@@ -188,10 +195,12 @@ bool Crafting::checkTranslation(Recipe r, int ver, int hor)
             {
                 continue;
             }
+            // JIKA i+VER DAN j+HOR TERDEFINISI MAKA AKAN DICOPY KE DUMMY
             tes.addItem(this->craftArr[i][j], i + ver, j + hor);
         }
     }
     return tes == r;
+    // MENGEMBALIKAN BOOLEAN KESAMAAN TRANSLASI CRAFTING TABLE DENGAN RECIPE
 }
 
 bool Crafting::checkSimetri(Recipe r)
@@ -202,16 +211,17 @@ bool Crafting::checkSimetri(Recipe r)
         for (int j = 0; j < 3; j++)
         {
             tes.addItem(this->craftArr[i][2 - j], i, j);
+            // MENCERMINKAN SETIAP ITEM DI CRAFTING TABLE DENGAN DI DUMMYNYA
         }
     }
 
+    // MELAKUKAN PENGECEKAN TERHADAP SEMUA KEMUNGKINAN TRANSLASI DARI MIRROR CRAFTING TABLE
     int maxVer = 3 - this->getRow();
     int maxHor = 3 - this->getCol();
     for (int i = -1 * maxVer; i <= maxVer; i++)
     {
         for (int j = -1 * maxHor; j <= maxHor; j++)
         {
-            // cout << i << " " << j << endl;
             if (tes.checkTranslation(r, i, j))
             {
                 return true;
@@ -222,6 +232,8 @@ bool Crafting::checkSimetri(Recipe r)
 }
 
 bool Crafting::configurationCheck(Recipe r)
+// MENGECEK SEMUA KEMUNGKINAN KONFIGURASI DARI CRAFTING TABLE
+// BAIK SIMETRINYA MAUPUN TRANSLASINYA DENGAN RECIPE
 {
     if (this->checkSimetri(r))
     {
@@ -236,7 +248,6 @@ bool Crafting::configurationCheck(Recipe r)
         {
             for (int j = -1 * maxHor; j <= maxHor; j++)
             {
-                // cout << i << " " << j << endl;
                 if (this->checkTranslation(r, i, j))
                 {
                     return true;
@@ -254,6 +265,7 @@ bool Crafting::isAllTool()
         for (int j = 0; j < 3; j++)
         {
             if (this->craftArr[i][j] != NULL && this->craftArr[i][j]->getType() != "TOOL")
+            // SLOT CRAFTING TABLE TIDAK KOSONG DAN TIPENYA BUKAN TOOL
             {
                 return false;
             }
@@ -272,10 +284,13 @@ bool Crafting::isAllTheSameTool()
             for (int j = 0; j < 3; j++)
             {
                 if (this->craftArr[i][j] != NULL && temp == "none")
+                // SLOT CRAFTING TABLE TIDAK KOSONG DAN TEMP MASIH none
                 {
                     temp = this->craftArr[i][j]->getName();
                 }
                 else if (this->craftArr[i][j] != NULL && temp != "none")
+                // SLOT CRAFTING TABLE TIDAK KOSONG DAN TEMP SUDAH TIDAK NONE
+                // DILAKUKAN PENGECEKAN NAMA ITEM DI SLOT DENGAN TEMP
                 {
                     if (temp != this->craftArr[i][j]->getName())
                     {
