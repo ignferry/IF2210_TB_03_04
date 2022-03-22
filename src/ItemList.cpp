@@ -45,17 +45,29 @@ void ItemList::setItemsConfiguration(string directory) {
         this->items.push_back(item);
     }
 }
-
-Item* ItemList::createItem(string itemName) {
-// Mengembalikan pointer to objek Item dengan nama itemName
-// Jika tidak ditemukan, mengembalikan nullptr
+Item* ItemList::selectItem(string itemName) const {
+// Mengembalikan pointer to objek Item dalam vector items
+// Fungsi digunakan hanya untuk membaca atribut umum suatu item
     for (auto itr : this->items) {
         if (itr->getName() == itemName) {
-            return itr->deepCopy();
+            return itr;
         }
     }
     // Mungkin nanti harus ada throw exception kalau tidak ketemu
     return nullptr;
+}
+
+Item* ItemList::createItem(string itemName) {
+// Mengembalikan pointer to objek Item dengan nama itemName
+// Jika tidak ditemukan, mengembalikan nullptr
+    Item* item = selectItem(itemName);
+    if (item != nullptr) {
+        return item->deepCopy();
+    }
+    else {
+        // Mungkin nanti harus ada throw exception kalau tidak ketemu
+        return nullptr;
+    }
 }
 
 void ItemList::printItems() const {

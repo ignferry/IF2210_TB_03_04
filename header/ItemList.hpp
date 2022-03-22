@@ -28,8 +28,12 @@ class ItemList {
         void setItemsConfiguration(string directory);
         // Mengisi vector item sesuai dengan konfigurasi pada directory
 
+        Item* selectItem(string itemName) const;
+        // Mengembalikan pointer to objek Item dalam vector items
+        // Fungsi digunakan hanya untuk membaca atribut umum suatu item
+
         Item* createItem(string itemName);
-        // Mengembalikan pointer to objek Item dengan nama itemName
+        // Mengembalikan pointer to objek baru Item dengan nama itemName
 
         void printItems() const;
 };

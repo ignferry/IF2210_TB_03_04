@@ -1,11 +1,10 @@
 #include "../header/Inventory.hpp"
 
-Inventory::Inventory(Load *load) {
+Inventory::Inventory() {
     this->item = new Item*[INVENTORY_SLOT];
-    this->load = load;
-    // for (int i = 0; i < INVENTORY_SLOT; i++) {
-    //     delete this->item[i];
-    // }
+    for (int i = 0; i < INVENTORY_SLOT; i++) {
+        this->item[i] = nullptr;
+    }
 }
 
 Inventory::~Inventory() {
@@ -15,12 +14,10 @@ Inventory::~Inventory() {
     delete[] this->item;
 }
 
-void Inventory::addItem(int inventorySlotID, string name, int quantity) {
-    this->item[inventorySlotID]->setID(load->getID(name));
-    this->item[inventorySlotID]->setName(name);
-    // this->item[inventorySlotID].setType(load->getType(name));
+void Inventory::addItem(int inventorySlotID, string name, int quantity, ItemList& itemList) {
+    this->item[inventorySlotID] = itemList.createItem(name);
     this->item[inventorySlotID]->setQuantity(quantity);
-    if (load->getType(name) == "TOOL") {
+    if (itemList.selectItem(name)->getType() == "TOOL") {
         this->item[inventorySlotID]->setDurability(10);
     }
 }
@@ -31,6 +28,7 @@ void Inventory::subtractItem(int inventorySlotID, int quantity) {
 
 void Inventory::deleteItem(int inventorySlotID) {
     delete this->item[inventorySlotID];
+    this->item[inventorySlotID] = nullptr;
 }
 
 bool Inventory::isEmptySlot(int inventorySlotID) {
@@ -104,48 +102,81 @@ void Inventory::giveMessage(int inventorySlotID, string name, int quantity) {
     cout << "Berhasil menambahkan item " << name << " sebanyak " << quantity << " pada slot ID inventory ke-" << inventorySlotID << endl;
 }
 
-void Inventory::give(string name, int quantity) {
-    for (int i = 0; i < INVENTORY_SLOT; i++) {
-        if (this->item[i]->getName() == name && load->getType(name) == "NONTOOL" && !this->isFullSlot(i)) {
-            if (quantity > this->remainingSlot(i)) {
-                this->giveMessage(i, name, this->remainingSlot(i));
-                quantity -= this->remainingSlot(i);
-                this->item[i]->addQuantity(this->remainingSlot(i));
-            } else {
-                this->giveMessage(i, name, quantity);
-                this->item[i]->addQuantity(quantity);
-                quantity = 0;
-                break;
-            }
-        }
-    }
-    if (quantity > 0) {
-        for (int i = 0; i < INVENTORY_SLOT; i++) {
-            if (this->isEmptySlot(i)) {
-                if (load->getType(name) == "NONTOOL") {
-                    if (quantity > MAX_ITEM) {
-                        this->giveMessage(i, name, MAX_ITEM);
-                        quantity -= MAX_ITEM;
-                        this->addItem(i, name, MAX_ITEM);
-                    } else {
-                        this->giveMessage(i, name, quantity);
-                        this->addItem(i, name, quantity);
-                        break;
+void Inventory::give(string name, int quantity, ItemList& itemList) {
+    // Memberikan item dengan nama name sebanyak quantity
+
+    // Catat slot inventory yang mengandung item dengan nama name dan berapa quantity yang masih dapat ditampungnya
+    // Hanya untuk NONTOOL
+    string itemType = itemList.selectItem(name)->getType();
+    vector<tuple<int, int>> sameNameSlots; // {slotID, quantity}
+
+    if (itemType == "NONTOOL") {
+        int i = 0;
+        while (i < INVENTORY_SLOT && quantity > 0) {
+            if (!this->isEmptySlot(i)) {
+                if (this->item[i]->getName() == name && !this->isFullSlot(i)) {
+                    if (quantity > this->remainingSlot(i)) {
+                        sameNameSlots.push_back(make_tuple(i, this->remainingSlot(i)));
+                        quantity -= this->remainingSlot(i);
                     }
-                } else {
-                    this->giveMessage(i, name, 1);
-                    quantity -= 1;
-                    this->addItem(i, name, 1);
-                    if (quantity == 0) {
-                        break;
+                    else {
+                        sameNameSlots.push_back(make_tuple(i, quantity));
+                        quantity = 0;
                     }
                 }
+            }
+            i++;
+        }
+    }
+
+    // Catat slot inventory yang kosong jika masih ada item yang memerlukan slot
+    vector<tuple<int, int>> emptySlotsUsed; // {slotID, quantity}
+    if (quantity != 0) {
+        int i = 0;
+        while (i < INVENTORY_SLOT && quantity > 0) {
+            if (this->isEmptySlot(i)) {
+                if (itemType == "NONTOOL") {
+                    if (quantity > MAX_ITEM) {
+                        emptySlotsUsed.push_back(make_tuple(i, MAX_ITEM));
+                        quantity -= MAX_ITEM;
+                    }
+                    else {
+                        emptySlotsUsed.push_back(make_tuple(i, quantity));
+                        quantity = 0;
+                    }
+                }
+                else {
+                    emptySlotsUsed.push_back(make_tuple(i, 1));
+                    quantity -= 1;
+                }
+            }
+            i++;
+        }
+    }
+    
+    // Command gagal jika masih ada sejumlah item yang belum teralokasi suatu slot
+    if (quantity != 0) {
+        // throw Exception
+        cout << "Inventory penuh";
+    }
+    else {
+        // Memberikan item ke slot sesuai dengan proses sebelumnya
+        for (auto [slotID, slotQuantity] : sameNameSlots) {
+            this->giveMessage(slotID, name, slotQuantity);
+            this->item[slotID]->addQuantity(slotQuantity);
+        }
+        for (auto [slotID, slotQuantity] : emptySlotsUsed) {
+            this->giveMessage(slotID, name, slotQuantity);
+            this->item[slotID] = itemList.createItem(name);
+            if (this->item[slotID]->getType() == "NONTOOL") {
+                this->item[slotID]->setQuantity(slotQuantity);
             }
         }
     }
 }
 
 void Inventory::discard(string strInventorySlotID, int quantity) {
+    // Membuang quantity buah item dari slot inventory slotID
     int inventorySlotID = this->string_to_int(strInventorySlotID);
     if (inventorySlotID != -1) {
         if (this->item[inventorySlotID]->getQuantity() > quantity) {
@@ -165,7 +196,15 @@ void Inventory::discard(string strInventorySlotID, int quantity) {
 void Inventory::move(string strInventorySlotIDSrc, string strInventorySlotIDDest) {
     int inventorySlotIDSrc = this->string_to_int(strInventorySlotIDSrc);
     int inventorySlotIDDest = this->string_to_int(strInventorySlotIDDest);
-    if (this->item[inventorySlotIDSrc] == this->item[inventorySlotIDDest] && this->item[inventorySlotIDSrc]->getType() == "NONTOOL" && this->item[inventorySlotIDDest]->getType() == "NONTOOL") {
+
+    // Pindahkan item secara keseluruhan ke slot baru jika slot destinasi kosong
+    if (this->item[inventorySlotIDDest] == nullptr && inventorySlotIDDest != inventorySlotIDSrc) {
+        this->item[inventorySlotIDDest] = this->item[inventorySlotIDSrc];
+        this->item[inventorySlotIDSrc] = nullptr;
+        cout << "Berhasil memindahkan " << this->item[inventorySlotIDDest]->getName() << " sebanyak " << this->item[inventorySlotIDDest]->getQuantity() << " ke slot ID inventory ke-" << inventorySlotIDDest << endl;
+    }
+    // Item pada slot destinasi sama dengan item pada slot sumber dan jenis item NONTOOL
+    else if (this->item[inventorySlotIDSrc]->getName() == this->item[inventorySlotIDDest]->getName() && this->item[inventorySlotIDSrc]->getType() == "NONTOOL") {
         if (!this->isFullSlot(inventorySlotIDDest)) {
             if (this->item[inventorySlotIDSrc]->getQuantity() > this->remainingSlot(inventorySlotIDDest)) {
                 cout << "Berhasil menumpuk item " << this->item[inventorySlotIDDest]->getName() << " sebanyak " << this->remainingSlot(inventorySlotIDDest) << " pada slot ID inventory ke-" << inventorySlotIDDest << endl;
@@ -194,8 +233,10 @@ void Inventory::use(string strInventorySlotID) {
             this->deleteItem(inventorySlotID);
         }
     } else if (this->item[inventorySlotID]->getType() == "NONTOOL") {
+        // Nanti Ganti jadi Exception
         cout << "Item " << this->item[inventorySlotID]->getName() << " tidak dapat digunakan karena bukan tool" << endl;
     } else {
+        // Nanti Ganti jadi Exception
         cout << "Tidak ada item yang dapat digunakan dalam slot ini" << endl;
     }
 }

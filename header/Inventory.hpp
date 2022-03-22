@@ -3,8 +3,10 @@
 
 #include <iostream>
 #include <iomanip>
+#include <vector>
+#include <tuple>
 #include "Item2.hpp"
-#include "Load.hpp"
+#include "ItemList.hpp"
 using namespace std;
 
 #define INVENTORY_SLOT 27
@@ -15,12 +17,11 @@ using namespace std;
 class Inventory {
     private:
         Item** item;
-        Load* load;
 
     public:
-        Inventory(Load* load);
+        Inventory();
         ~Inventory();
-        void addItem(int inventorySlotID, string name, int quantity);
+        void addItem(int inventorySlotID, string name, int quantity, ItemList& itemList);
         void subtractItem(int inventorySlotID, int quantity);
         void deleteItem(int inventorySlotID);
         bool isEmptySlot(int inventorySlotID);
@@ -31,7 +32,7 @@ class Inventory {
         void durabilityOutput(int durability);
         void showInventory();
         void giveMessage(int inventorySlotID, string name, int quantity);
-        void give(string name, int quantity);
+        void give(string name, int quantity, ItemList& itemList);
         void discard(string strInventorySlotID, int quantity);
         void move(string strInventorySlotIDSrc, string strInventorySlotIDDest);
         void use(string strInventorySlotID);

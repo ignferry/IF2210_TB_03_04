@@ -4,38 +4,16 @@
 #include <string>
 
 #include "./header/Inventory.hpp"
-#include "./header/Item.hpp"
-#include "./header/Load.hpp"
 #include "./header/Export.hpp"
-//#include "./header/RecipeList.hpp"
-//#include "./header/ItemList.hpp"
-
-/*
-NOTE
-Untuk RecipeList, gunakan directory "./config/recipe" pada saat inisialisasi
-Ex: RecipeList recipeList("./config/recipe");
-Fungsionalitas : 
-- mencari recipe berdasarkan masukan item name
-- mencari nama dan jumlah item yang dapat dicraft menggunakan konfigurasi pada objek crafting
-
-Untuk ItemList, gunakan direcotry "./config/item.txt" pada saat inisialisasi
-Ex: ItemList itemList("./config/item.txt");
-- membuat pointer to item (*Item) dari masukan nama item
-
-Untuk menyimpan data item, perlu dalam bentuk pointer to item agar dapat mempertahankan childnya
-
-Kalau mau copy suatu item, pakai {NamaVariabelPointerToItem}->deepCopy() agar childnya tercopy juga
-
-Semua ^ ditaro di main karena masih clash dengan Item yang lama dan item lama nyambung ke kelas lain
-
-Belum ada handling exception jadi kalau nama item invalid mungkin programnya akan error
-*/
+#include "./header/RecipeList.hpp"
+#include "./header/ItemList.hpp"
 
 using namespace std;
 
 int main() {
-  Load load;
-  Inventory inventory(&load);
+  ItemList itemList("./config/item.txt");
+  RecipeList recipeList("./config/recipe");
+  Inventory inventory;
 
   // sample interaction
   string command;
@@ -52,7 +30,7 @@ int main() {
       string itemName;
       int itemQty;
       cin >> itemName >> itemQty;
-      inventory.give(itemName, itemQty);
+      inventory.give(itemName, itemQty, itemList);
     } else if (command == "DISCARD") {
       string inventorySlotID;
       int itemQty;
