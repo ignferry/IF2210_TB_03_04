@@ -1,5 +1,5 @@
 #include "../header/Export.hpp"
-#include "../header/Item2.hpp"
+#include "../header/Item.hpp"
 #include <fstream>
 
 Export::Export(string fileName, Inventory *inventory) : fileName(fileName) {

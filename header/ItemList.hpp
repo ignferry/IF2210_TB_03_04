@@ -1,7 +1,7 @@
 #ifndef __ITEM_LIST_HPP__
 #define __ITEM_LIST_HPP__
 
-#include "Item2.hpp"
+#include "Item.hpp"
 #include <vector>
 #include <fstream>
 #include <iostream>

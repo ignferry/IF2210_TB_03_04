@@ -2,7 +2,7 @@
 #define __CRAFTING_HPP__
 
 #include <iomanip>
-#include "Item2.hpp"
+#include "Item.hpp"
 #include "Recipe.hpp"
 using namespace std;
 

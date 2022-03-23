@@ -1,4 +1,4 @@
-#include "../header/Item2.hpp"
+#include "../header/Item.hpp"
 
 /* 1.ITEM MODULE Implementations */
 Item::Item()
