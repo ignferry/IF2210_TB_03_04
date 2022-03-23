@@ -87,6 +87,11 @@ int Crafting::getRow()
     return this->rowEff;
 }
 
+Item *Crafting::getItem(int row, int col)
+{
+    return this->craftArr[row][col];
+}
+
 bool Crafting::isSlotEmpty(int row, int col)
 {
     return (this->craftArr[row][col] == NULL);
@@ -130,6 +135,7 @@ void Crafting::addItem(Item *I, int row, int col)
     this->craftArr[row][col] = I;
     this->checkCol();
     this->checkRow();
+    // I->addQuantity(-1);
 }
 
 void Crafting::discardItem(int row, int col)
@@ -145,25 +151,29 @@ bool Crafting::operator==(Recipe r)
     {
         for (int j = 0; j < 3; j++)
         {
-            if (this->craftArr[i][j] == NULL && r.getIngredientsAt(i, j) != "")
+            if (this->craftArr[i][j] == NULL && r.getIngredientsAt(i, j) != "-")
             // SLOT CRAFTING TABLE KOSONG TETAPI SLOT RECIPE TIDAK KOSONG
             {
                 return false;
             }
-            else if (this->craftArr[i][j] != NULL && r.getIngredientsAt(i, j) == "")
+            else if (this->craftArr[i][j] != NULL && r.getIngredientsAt(i, j) == "-")
             // SLOT CRAFTING TABLE TIDAK KOSONG TETAPI SLOT RECIPE KOSONG
             {
+
                 return false;
             }
-            else if (this->craftArr[i][j] != NULL && r.getIngredientsAt(i, j) != "") // SLOT CRAFTING TABLE DAN RECIPE TIDAK KOSONG
+            else if (this->craftArr[i][j] != NULL && r.getIngredientsAt(i, j) != "-") // SLOT CRAFTING TABLE DAN RECIPE TIDAK KOSONG
             {
-                if (this->craftArr[i][j]->getVariant() != "")
+                if (this->craftArr[i][j]->getVariant() != "-")
                 // SLOT CRAFTING TABLE MEMILIKI VARIANT
                 {
                     if (this->craftArr[i][j]->getVariant() != r.getIngredientsAt(i, j))
                     // MENGECEK VARIAN DARI SLOT CRAFTING TABLE DENGAN SLOT RECIPE DI KOLOM DAN BARIS YANG SESUAI
                     {
-                        return false;
+                        if (this->craftArr[i][j]->getName() != r.getIngredientsAt(i, j))
+                        {
+                            return false;
+                        }
                     }
                 }
                 else if (this->craftArr[i][j]->getName() != r.getIngredientsAt(i, j))
@@ -214,7 +224,6 @@ bool Crafting::checkSimetri(Recipe r)
             // MENCERMINKAN SETIAP ITEM DI CRAFTING TABLE DENGAN DI DUMMYNYA
         }
     }
-
     // MELAKUKAN PENGECEKAN TERHADAP SEMUA KEMUNGKINAN TRANSLASI DARI MIRROR CRAFTING TABLE
     int maxVer = 3 - this->getRow();
     int maxHor = 3 - this->getCol();
@@ -274,32 +283,59 @@ bool Crafting::isAllTool()
     return true;
 }
 
-bool Crafting::isAllTheSameTool()
+string Crafting::isAllTheSameTool()
 {
     if (this->isAllTool())
     {
-        string temp = "none";
+        string temp = "";
         for (int i = 0; i < 3; i++)
         {
             for (int j = 0; j < 3; j++)
             {
-                if (this->craftArr[i][j] != NULL && temp == "none")
+                if (this->craftArr[i][j] != NULL && temp == "")
                 // SLOT CRAFTING TABLE TIDAK KOSONG DAN TEMP MASIH none
                 {
                     temp = this->craftArr[i][j]->getName();
                 }
-                else if (this->craftArr[i][j] != NULL && temp != "none")
+                else if (this->craftArr[i][j] != NULL && temp != "")
                 // SLOT CRAFTING TABLE TIDAK KOSONG DAN TEMP SUDAH TIDAK NONE
                 // DILAKUKAN PENGECEKAN NAMA ITEM DI SLOT DENGAN TEMP
                 {
                     if (temp != this->craftArr[i][j]->getName())
                     {
-                        return false;
+                        return "";
                     }
                 }
             }
         }
-        return true;
+        return temp;
     }
-    return false;
+    return "";
+}
+
+int Crafting::durabilitySum()
+{
+    int sum = 0;
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            if (this->craftArr[i][j] != NULL && this->craftArr[i][j]->getType() == "TOOL")
+            {
+                sum += this->craftArr[i][j]->getDurability();
+            }
+        }
+    }
+    return sum;
+}
+
+void Crafting::resetCraftTable()
+{
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            this->discardItem(i, j);
+        }
+    }
 }

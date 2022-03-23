@@ -28,6 +28,7 @@ public:
     void checkCol();
     int getRow();
     int getCol();
+    Item *getItem(int row, int col);
 
     // OTHER METHOD
     bool isSlotEmpty(int row, int col);
@@ -48,8 +49,10 @@ public:
     // MENGECEK SEMUA KEMUNGKINAN CONFIGURASI CRAFTING TABLE DENGAN RECIPE
     bool isAllTool();
     // MENGECEK APAKAH SEMUA ITEM DI CRAFTING TABLE ADALAH TOOL
-    bool isAllTheSameTool();
+    string isAllTheSameTool();
     // MENGECEK APAKAH SEMUA ITEM DI CRAFTING TABLE ADALAH TOOL YANG SAMA
+    int durabilitySum();
+    void resetCraftTable();
 };
 
 #endif
