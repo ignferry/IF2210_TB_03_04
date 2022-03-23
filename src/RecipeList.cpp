@@ -87,5 +87,5 @@ tuple<string, int> RecipeList::searchCraftableItem(Crafting &c) {
         }
     }
     // Mungkin nanti harus ada exception jika tidak ketemu
-    return make_tuple("",0);
+    return make_tuple("NONE",0);
 }

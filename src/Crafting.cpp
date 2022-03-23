@@ -12,7 +12,7 @@ Crafting::Crafting()
         this->craftArr[i] = new Item *[3];
         for (int j = 0; j < 3; j++)
         {
-            this->craftArr[i][j] = NULL;
+            this->craftArr[i][j] = nullptr;
         }
     }
     rowEff = 0;
@@ -132,7 +132,12 @@ void Crafting::showCraftTable()
 
 void Crafting::addItem(Item *I, int row, int col)
 {
-    this->craftArr[row][col] = I;
+    if (I == nullptr) {
+        this->craftArr[row][col] = nullptr;
+    }
+    else {
+        this->craftArr[row][col] = I->deepCopy();
+    }
     this->checkCol();
     this->checkRow();
     // I->addQuantity(-1);
@@ -140,7 +145,8 @@ void Crafting::addItem(Item *I, int row, int col)
 
 void Crafting::discardItem(int row, int col)
 {
-    this->craftArr[row][col] = NULL;
+    delete craftArr[row][col];
+    this->craftArr[row][col] = nullptr;
     this->checkCol();
     this->checkRow();
 }
@@ -214,7 +220,7 @@ bool Crafting::checkTranslation(Recipe r, int ver, int hor)
 }
 
 bool Crafting::checkSimetri(Recipe r)
-{
+{ 
     Crafting tes;
     for (int i = 0; i < 3; i++)
     {
