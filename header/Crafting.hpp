@@ -33,7 +33,7 @@ public:
     // OTHER METHOD
     bool isSlotEmpty(int row, int col);
     // MENGECEK APAKAH SLOT CRAFTING DI KOLOM DAN BARIS MASUKAN KOSONG
-    void addItem(Item *I, int row, int col);
+    void addItem(Item *I, int row, int col, int qty);
     // MENAMBAHKAN ITEM KE KOLOM DAN BARIS CRAFTING TABLE
     void discardItem(int row, int col);
     // MENGHAPUS ITEM DI KOLOM DAN BARIS CRAFTING TABLE
@@ -52,7 +52,7 @@ public:
     string isAllTheSameTool();
     // MENGECEK APAKAH SEMUA ITEM DI CRAFTING TABLE ADALAH TOOL YANG SAMA
     int durabilitySum();
-    void resetCraftTable();
+    void substractQtyCraftTable();
 };
 
 #endif

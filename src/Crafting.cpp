@@ -112,7 +112,7 @@ void Crafting::showCraftTable()
         {
             if (!this->isSlotEmpty(i, j))
             {
-                cout << "|" << right << setw(16) << this->craftArr[i][j]->getName() << setw(8) << " ";
+                cout << "|" << right << setw(16) << this->craftArr[i][j]->getName() << "/qty:" << left << setw(2) << this->craftArr[i][j]->getQuantity() << " ";
             }
             else
             {
@@ -130,13 +130,16 @@ void Crafting::showCraftTable()
     }
 }
 
-void Crafting::addItem(Item *I, int row, int col)
+void Crafting::addItem(Item *I, int row, int col, int qty)
 {
-    if (I == nullptr) {
+    if (I == nullptr)
+    {
         this->craftArr[row][col] = nullptr;
     }
-    else {
+    else
+    {
         this->craftArr[row][col] = I->deepCopy();
+        this->craftArr[row][col]->addQuantity(qty - this->craftArr[row][col]->getQuantity());
     }
     this->checkCol();
     this->checkRow();
@@ -212,7 +215,7 @@ bool Crafting::checkTranslation(Recipe r, int ver, int hor)
                 continue;
             }
             // JIKA i+VER DAN j+HOR TERDEFINISI MAKA AKAN DICOPY KE DUMMY
-            tes.addItem(this->craftArr[i][j], i + ver, j + hor);
+            tes.addItem(this->craftArr[i][j], i + ver, j + hor, 1);
         }
     }
     return tes == r;
@@ -220,13 +223,13 @@ bool Crafting::checkTranslation(Recipe r, int ver, int hor)
 }
 
 bool Crafting::checkSimetri(Recipe r)
-{ 
+{
     Crafting tes;
     for (int i = 0; i < 3; i++)
     {
         for (int j = 0; j < 3; j++)
         {
-            tes.addItem(this->craftArr[i][2 - j], i, j);
+            tes.addItem(this->craftArr[i][2 - j], i, j, 1);
             // MENCERMINKAN SETIAP ITEM DI CRAFTING TABLE DENGAN DI DUMMYNYA
         }
     }
@@ -335,13 +338,20 @@ int Crafting::durabilitySum()
     return sum;
 }
 
-void Crafting::resetCraftTable()
+void Crafting::substractQtyCraftTable()
 {
     for (int i = 0; i < 3; i++)
     {
         for (int j = 0; j < 3; j++)
         {
-            this->discardItem(i, j);
+            if (this->craftArr[i][j] != NULL)
+            {
+                this->craftArr[i][j]->addQuantity(-1);
+                if (this->craftArr[i][j]->getQuantity() == 0)
+                {
+                    this->discardItem(i, j);
+                }
+            }
         }
     }
 }

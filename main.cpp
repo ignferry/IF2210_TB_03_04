@@ -55,8 +55,8 @@ int main()
     {
       string slotSrc;
       int slotQty;
-      // need to handle multiple destinations
       cin >> slotSrc >> slotQty;
+      int slotInt = stoi(slotSrc.substr(1, slotSrc.length()));
       string target;
       int row, col;
       if (slotSrc[0] == 'I')
@@ -64,23 +64,25 @@ int main()
         for (int i = 0; i < slotQty; i++)
         {
           cin >> target;
+          int qty;
+          cin >> qty;
           row = (target[1] - '0') / 3;
           col = (target[1] - '0') % 3;
           if (target[0] == 'C')
           {
-            craftTable.addItem(inventory.get_items()[slotSrc[1] - '0'], row, col);
-            cout
-                << inventory.get_items()[slotSrc[1] - '0']->getName() << " Berhasil ditambahkan ke Crafting Table slot ke-" << target[1] - '0' << endl;
-            if (inventory.get_items()[slotSrc[1] - '0']->getType() == "TOOL")
+            craftTable.addItem(inventory.get_items()[slotInt], row, col, qty);
+            cout << qty << " "
+                 << inventory.get_items()[slotInt]->getName() << " berhasil ditambahkan ke Crafting Table slot ke-" << target[1] - '0' << endl;
+            if (inventory.get_items()[slotInt]->getType() == "TOOL")
             {
-              inventory.deleteItem(slotSrc[1] - '0');
+              inventory.deleteItem(slotInt);
             }
             else
             {
-              inventory.get_items()[slotSrc[1] - '0']->addQuantity(-1);
-              if (inventory.get_items()[slotSrc[1] - '0']->getQuantity() == 0)
+              inventory.get_items()[slotInt]->addQuantity(-1 * qty);
+              if (inventory.get_items()[slotInt]->getQuantity() == 0)
               {
-                inventory.deleteItem(slotSrc[1] - '0');
+                inventory.deleteItem(slotInt);
               }
             }
           }
@@ -93,10 +95,22 @@ int main()
       else if (slotSrc[0] == 'C')
       {
         cin >> target;
-        row = (slotSrc[1] - '0') / 3;
-        col = (slotSrc[1] - '0') % 3;
-        inventory.addItem(target[1] - '0', craftTable.getItem(row, col)->getName(), 1, itemList);
-        craftTable.discardItem(row, col);
+        row = (slotInt) / 3;
+        col = (slotInt) % 3;
+        int targetInt = stoi(target.substr(1, target.length()));
+        if (inventory.isEmptySlot(targetInt))
+        {
+          inventory.addItem(targetInt, craftTable.getItem(row, col)->getName(), 1, itemList);
+        }
+        else if (inventory.get_items()[targetInt]->getName() == craftTable.getItem(row, col)->getName())
+        {
+          inventory.get_items()[targetInt]->addQuantity(1);
+        }
+        craftTable.getItem(row, col)->addQuantity(-1);
+        if (craftTable.getItem(row, col)->getQuantity() == 0)
+        {
+          craftTable.discardItem(row, col);
+        }
         cout << "Item berhasil dipindahkan" << endl;
       }
     }
@@ -134,7 +148,8 @@ int main()
         tuple<string, int> a = recipeList.searchCraftableItem(craftTable);
         if (get<0>(a) != "NONE")
         {
-          craftTable.resetCraftTable();
+          // craftTable.resetCraftTable();
+          craftTable.substractQtyCraftTable();
           inventory.give(get<0>(a), get<1>(a), itemList);
         }
         else
