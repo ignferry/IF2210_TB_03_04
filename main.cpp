@@ -69,20 +69,20 @@ int main()
           if (target[0] == 'C')
           {
             craftTable.addItem(inventory.get_items()[slotSrc[1] - '0'], row, col);
+            cout
+                << inventory.get_items()[slotSrc[1] - '0']->getName() << " Berhasil ditambahkan ke Crafting Table slot ke-" << target[1] - '0' << endl;
             if (inventory.get_items()[slotSrc[1] - '0']->getType() == "TOOL")
             {
-              // inventory.deleteItem(slotSrc[1] - '0'); INI GABISA
+              inventory.deleteItem(slotSrc[1] - '0');
             }
             else
             {
               inventory.get_items()[slotSrc[1] - '0']->addQuantity(-1);
               if (inventory.get_items()[slotSrc[1] - '0']->getQuantity() == 0)
               {
-                // inventory.deleteItem(slotSrc[1] - '0'); INI GABISA
+                inventory.deleteItem(slotSrc[1] - '0');
               }
             }
-            cout
-                << inventory.get_items()[slotSrc[1] - '0']->getName() << " Berhasil ditambahkan ke Crafting Table slot ke-" << target[1] - '0' << endl;
           }
           else if (target[0] == 'I')
           {
