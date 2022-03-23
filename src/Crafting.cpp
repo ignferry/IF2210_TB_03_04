@@ -99,6 +99,8 @@ bool Crafting::isSlotEmpty(int row, int col)
 
 void Crafting::showCraftTable()
 {
+    string stuff5(75, ' ');
+    cout << stuff5;
     for (int i = 0; i < 3; i++)
     {
         string stuff(24, '-');
@@ -108,6 +110,7 @@ void Crafting::showCraftTable()
 
     for (int i = 0; i < 3; i++)
     {
+        cout << stuff5;
         for (int j = 0; j < 3; j++)
         {
             if (!this->isSlotEmpty(i, j))
@@ -121,6 +124,7 @@ void Crafting::showCraftTable()
             }
         }
         cout << "|" << endl;
+        cout << stuff5;
         for (int k = 0; k < 3; k++)
         {
             string stuff(24, '-');

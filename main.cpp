@@ -18,24 +18,42 @@ int main()
   Crafting craftTable;
 
   // sample interaction
+  string stuff1(226, '#');
+  string stuff2(91, ' ');
+  string stuff3(42, '-');
+  string stuff4(102, ' ');
+  string stuff5(75, ' ');
+  string stuff6(99, ' ');
+  string stuff7(97, ' ');
+
+  cout << stuff7 << "!!! WELCOME TO MINECRAFT LITE !!!" << endl;
+  cout << stuff1 << endl;
+  cout << stuff2 << "+" << stuff3 << "+" << endl;
+  cout << stuff2 << "  COMMAND : ";
   string command;
   while (cin >> command)
   {
+    cout << stuff2 << "+" << stuff3 << "+" << endl;
     if (command == "EXPORT")
     {
       string fileName;
       cin >> fileName;
       Export ekspor(fileName, &inventory);
 
-      cout << "Exported" << endl;
+      cout << "Semua item pada inventory berhasil di export ke file " << fileName << endl;
+      cout << stuff1 << endl;
+      cout << stuff2 << "+" << stuff3 << "+" << endl;
+      cout << stuff2 << "  COMMAND : ";
     }
     else if (command == "SHOW")
     {
-      cout << "CRAFTING TABLE" << endl;
+      cout << stuff5 << "CRAFTING" << endl;
       craftTable.showCraftTable();
-      cout << endl;
       cout << "INVENTORY" << endl;
       inventory.showInventory();
+      cout << stuff1 << endl;
+      cout << stuff2 << "+" << stuff3 << "+" << endl;
+      cout << stuff2 << "  COMMAND : ";
     }
     else if (command == "GIVE")
     {
@@ -43,6 +61,9 @@ int main()
       int itemQty;
       cin >> itemName >> itemQty;
       inventory.give(itemName, itemQty, itemList);
+      cout << stuff1 << endl;
+      cout << stuff2 << "+" << stuff3 << "+" << endl;
+      cout << stuff2 << "  COMMAND : ";
     }
     else if (command == "DISCARD")
     {
@@ -50,6 +71,9 @@ int main()
       int itemQty;
       cin >> inventorySlotID >> itemQty;
       inventory.discard(inventorySlotID, itemQty);
+      cout << stuff1 << endl;
+      cout << stuff2 << "+" << stuff3 << "+" << endl;
+      cout << stuff2 << "  COMMAND : ";
     }
     else if (command == "MOVE")
     {
@@ -113,12 +137,18 @@ int main()
         }
         cout << "Item berhasil dipindahkan" << endl;
       }
+      cout << stuff1 << endl;
+      cout << stuff2 << "+" << stuff3 << "+" << endl;
+      cout << stuff2 << "  COMMAND : ";
     }
     else if (command == "USE")
     {
       string inventorySlotID;
       cin >> inventorySlotID;
       inventory.use(inventorySlotID);
+      cout << stuff1 << endl;
+      cout << stuff2 << "+" << stuff3 << "+" << endl;
+      cout << stuff2 << "  COMMAND : ";
     }
     else if (command == "CRAFT")
     {
@@ -157,15 +187,23 @@ int main()
           cout << "Tidak ada item yang dapat dibuat sesuai Crafting Table!" << endl;
         }
       }
+      cout << stuff1 << endl;
+      cout << stuff2 << "+" << stuff3 << "+" << endl;
+      cout << stuff2 << "  COMMAND : ";
     }
     else if (command == "EXIT")
     {
+      cout << stuff6 << "!!! THANK YOU FOR PLAYING !!!" << endl;
+      cout << stuff1 << endl;
       break;
     }
     else
     {
       // todo
-      cout << "Invalid command" << endl;
+      cout << stuff4 << "!!! INVALID COMMAND !!!" << endl;
+      cout << stuff1 << endl;
+      cout << stuff2 << "+" << stuff3 << "+" << endl;
+      cout << stuff2 << "  COMMAND : ";
     }
   }
   return 0;
