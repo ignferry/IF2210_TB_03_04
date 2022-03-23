@@ -1,4 +1,5 @@
 #include "../header/Item.hpp"
+#include "../header/ItemException.hpp"
 
 /* 1.ITEM MODULE Implementations */
 Item::Item()
@@ -37,49 +38,49 @@ void Item::setName(string name)
 
 void Item::setQuantity(int quantity)
 {
-    // No modifiable quantity Exception
+    throw Item_No_QuantityException();
 }
 
 string Item::getVariant() const
 {
-    // No variant Exception
-    return NULL;
+    throw Item_No_VariantException();
+    // return NULL;
 }
 
 void Item::setVariant(string Variant)
 {
-    // No variant Exception
+    throw Item_No_VariantException();
 }
 
 int Item::getDurability() const
 {
-    // No durability exception
-    return 0;
+    throw Item_No_DurabilityException();
+    // return 0;
 }
 
 void Item::setDurability(int durability)
 {
-    // No durability Exception
+    throw Item_No_DurabilityException();
 }
 
 void Item::addQuantity(int quantity)
 {
-    // No modifiable quantity Exception
+    throw Item_No_QuantityException();
 }
 
 void Item::subtractQuantity(int quantity)
 {
-    // No modifiable quantity Exception
+    throw Item_No_QuantityException();
 }
 
 void Item::addDurability(int durability)
 {
-    // No modifiable durability Exception
+    throw Item_No_DurabilityException();
 }
 
 void Item::subtractDurability(int durability)
 {
-    // No modifiable durability Exception
+    throw Item_No_DurabilityException();
 }
 
 /* 2. TOOL ITEM MODULE Implementations */
@@ -122,18 +123,30 @@ int Non_Tool::getQuantity() const
 
 void Non_Tool::setQuantity(int quantity)
 {
-    this->Quantity = quantity;
-    // Exception Non_Tool 0 <= Q <= 64
+    int temp = quantity;
+    
+    if (temp > 64 || temp < 0)
+        throw Non_Tool_QuantityException();
+    else
+        this->Quantity = quantity;
 }
 void Non_Tool::addQuantity(int quantity)
 {
-    this->Quantity += quantity;
-    // Exception Non_Tool 0 <= Q <= 64
+    int temp = this->Quantity + quantity;
+    
+    if (temp > 64 || temp < 0)
+        throw Non_Tool_QuantityException();
+    else
+        this->Quantity += quantity;
 }
 void Non_Tool::subtractQuantity(int quantity)
 {
-    this->Quantity -= quantity;
-    // Exception Non_Tool 0 <= Q <= 64
+    int temp = this->Quantity - quantity;
+    
+    if (temp > 64 || temp < 0)
+        throw Non_Tool_QuantityException();
+    else
+        this->Quantity -= quantity;
 }
 
 /* 3. TOOL ITEM MODULE Implementations */
@@ -145,8 +158,12 @@ Tool::Tool() : Item(0, "NaN")
 
 Tool::Tool(int ID, string name, int Durability) : Item(ID, name)
 {
-    this->Durability = Durability;
-    // Exception 0 <= D <= 10
+    int temp = Durability;
+
+    if (temp > 10 || temp < 0)
+        throw Tool_DurabilityException();
+    else
+        this->Durability = Durability;
 }
 
 Item *Tool::deepCopy() const
@@ -171,20 +188,32 @@ int Tool::getDurability() const
 
 void Tool::setDurability(int durability)
 {
-    this->Durability = durability;
-    // Exception 0 <= D <= 10
+    int temp = durability;
+
+    if (temp > 10 || temp < 0)
+        throw Tool_DurabilityException();
+    else
+        this->Durability = durability;
 }
 
 void Tool::addDurability(int durability)
 {
-    this->Durability += durability;
-    // Exception 0 <= D <= 10
+    int temp = this->Durability + durability;
+
+    if (temp > 10 || temp < 0)
+        throw Tool_DurabilityException();
+    else
+        this->Durability += durability;
 }
 
 void Tool::subtractDurability(int durability)
 {
+    int temp = this->Durability - durability;
+
+    if (temp > 10 || temp < 0)
+        throw Tool_DurabilityException();
+    else
     this->Durability -= durability;
-    // Exception 0 <= D <= 10
 }
 
 // 4. Comperator Similarity
