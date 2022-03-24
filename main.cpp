@@ -77,18 +77,18 @@ int main()
       int row, col;
       if (slotSrc[0] == 'I')
       {
-        if (slotQty > 1) {
           for (int i = 0; i < slotQty; i++)
           {
             cin >> target;
-            int qty;
-            cin >> qty;
-            row = (target[1] - '0') / 3;
-            col = (target[1] - '0') % 3;
-
+            if (target.at(0) == 'I') {
+              inventory.move(slotSrc, target);
+            } else if (target.at(0) == 'C') {
+              int qty;
+              cin >> qty;
+              row = (target[1] - '0') / 3;
+              col = (target[1] - '0') % 3;
               craftTable.addItem(inventory.get_items()[slotInt], row, col, qty);
-              cout << qty << " "
-                  << inventory.get_items()[slotInt]->getName() << " berhasil ditambahkan ke Crafting Table slot ke-" << target[1] - '0' << endl;
+              cout << qty << " " << inventory.get_items()[slotInt]->getName() << " berhasil ditambahkan ke Crafting Table slot ke-" << target[1] - '0' << endl;
               if (inventory.get_items()[slotInt]->getType() == "TOOL")
               {
                 inventory.deleteItem(slotInt);
@@ -101,16 +101,11 @@ int main()
                   inventory.deleteItem(slotInt);
                 }
               }
+            } else {
+              cout << "Masukan slot ID dest tidak valid" << endl;
+            }
 
           }
-        } else if (slotQty == 1) {
-          cin >> target;
-          if (target.at(0) == 'I') {
-            inventory.move(slotSrc, target);
-          } else {
-            cout << "Masukan slot ID dest tidak valid" << endl;
-          }
-        }
       }
       else if (slotSrc[0] == 'C')
       {
