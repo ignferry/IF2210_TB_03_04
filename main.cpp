@@ -6,6 +6,7 @@
 #include "./header/Inventory.hpp"
 #include "./header/Export.hpp"
 #include "./header/RecipeList.hpp"
+#include "./header/ItemException.hpp"
 #include "./header/ItemList.hpp"
 
 using namespace std;

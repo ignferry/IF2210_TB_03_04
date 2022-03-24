@@ -92,8 +92,14 @@ Non_Tool::Non_Tool() : Item(0, "NaN")
 
 Non_Tool::Non_Tool(int ID, string name, int Quantity, string Variant) : Item(ID, name)
 {
-    this->Quantity = Quantity;
-    this->Variant = Variant;
+    int temp = Quantity;
+    
+    if (temp > 64 || temp < 0)
+        throw Non_Tool_QuantityException();
+    else{
+        this->Quantity = Quantity;
+        this->Variant = Variant;
+    }
 }
 
 Item *Non_Tool::deepCopy() const
