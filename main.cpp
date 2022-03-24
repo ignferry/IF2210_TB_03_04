@@ -8,6 +8,7 @@
 #include "./header/RecipeList.hpp"
 #include "./header/ItemException.hpp"
 #include "./header/ItemList.hpp"
+#include "./header/Pair.hpp"
 
 using namespace std;
 
@@ -156,12 +157,12 @@ int main()
       }
       else
       {
-        tuple<string, int> a = recipeList.searchCraftableItem(craftTable);
-        if (get<0>(a) != "NONE")
+        Pair<string, int> a = recipeList.searchCraftableItem(craftTable);
+        if (a.getFirst() != "NONE")
         {
           // craftTable.resetCraftTable();
           craftTable.substractQtyCraftTable();
-          inventory.give(get<0>(a), get<1>(a), itemList);
+          inventory.give(a.getFirst(), a.getSecond(), itemList);
         }
         else
         {

@@ -78,14 +78,14 @@ void RecipeList::printRecipe(string itemName) {
     searchRecipe(itemName).printRecipe();
 }
 
-tuple<string, int> RecipeList::searchCraftableItem(Crafting &c) {
+Pair<string, int> RecipeList::searchCraftableItem(Crafting &c) {
 // Mencari nama item yang dapat di-craft dengan konfigurasi pada c
 // Jika tidak ada item yang dapat di-craft, mengembalikan NULL
     for (auto itr : this->recipes) {
         if (c.configurationCheck(itr)) {
-            return make_tuple(itr.getResultName(), itr.getResultQuantity());
+            return Pair<string, int>(itr.getResultName(), itr.getResultQuantity());
         }
     }
     // Mungkin nanti harus ada exception jika tidak ketemu
-    return make_tuple("NONE",0);
+    return Pair<string, int>("NONE", 0);
 }

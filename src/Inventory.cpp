@@ -1,4 +1,5 @@
 #include "../header/Inventory.hpp"
+#include "../header/Pair.hpp"
 
 Inventory::Inventory() {
     this->item = new Item*[INVENTORY_SLOT];
@@ -108,7 +109,7 @@ void Inventory::give(string name, int quantity, ItemList& itemList) {
     // Catat slot inventory yang mengandung item dengan nama name dan berapa quantity yang masih dapat ditampungnya
     // Hanya untuk NONTOOL
     string itemType = itemList.selectItem(name)->getType();
-    vector<tuple<int, int>> sameNameSlots; // {slotID, quantity}
+    vector<Pair<int, int>> sameNameSlots; // {slotID, quantity}
 
     if (itemType == "NONTOOL") {
         int i = 0;
@@ -116,11 +117,11 @@ void Inventory::give(string name, int quantity, ItemList& itemList) {
             if (!this->isEmptySlot(i)) {
                 if (this->item[i]->getName() == name && !this->isFullSlot(i)) {
                     if (quantity > this->remainingSlot(i)) {
-                        sameNameSlots.push_back(make_tuple(i, this->remainingSlot(i)));
+                        sameNameSlots.push_back(Pair<int, int>(i, this->remainingSlot(i)));
                         quantity -= this->remainingSlot(i);
                     }
                     else {
-                        sameNameSlots.push_back(make_tuple(i, quantity));
+                        sameNameSlots.push_back(Pair<int, int>(i, quantity));
                         quantity = 0;
                     }
                 }
@@ -130,23 +131,23 @@ void Inventory::give(string name, int quantity, ItemList& itemList) {
     }
 
     // Catat slot inventory yang kosong jika masih ada item yang memerlukan slot
-    vector<tuple<int, int>> emptySlotsUsed; // {slotID, quantity}
+    vector<Pair<int, int>> emptySlotsUsed; // {slotID, quantity}
     if (quantity != 0) {
         int i = 0;
         while (i < INVENTORY_SLOT && quantity > 0) {
             if (this->isEmptySlot(i)) {
                 if (itemType == "NONTOOL") {
                     if (quantity > MAX_ITEM) {
-                        emptySlotsUsed.push_back(make_tuple(i, MAX_ITEM));
+                        emptySlotsUsed.push_back(Pair<int, int>(i, MAX_ITEM));
                         quantity -= MAX_ITEM;
                     }
                     else {
-                        emptySlotsUsed.push_back(make_tuple(i, quantity));
+                        emptySlotsUsed.push_back(Pair<int, int>(i, quantity));
                         quantity = 0;
                     }
                 }
                 else {
-                    emptySlotsUsed.push_back(make_tuple(i, 1));
+                    emptySlotsUsed.push_back(Pair<int, int>(i, 1));
                     quantity -= 1;
                 }
             }
@@ -161,11 +162,15 @@ void Inventory::give(string name, int quantity, ItemList& itemList) {
     }
     else {
         // Memberikan item ke slot sesuai dengan proses sebelumnya
-        for (auto [slotID, slotQuantity] : sameNameSlots) {
+        for (auto itr : sameNameSlots) {
+            int slotID = itr.getFirst();
+            int slotQuantity = itr.getSecond();
             this->giveMessage(slotID, name, slotQuantity);
             this->item[slotID]->addQuantity(slotQuantity);
         }
-        for (auto [slotID, slotQuantity] : emptySlotsUsed) {
+        for (auto itr : emptySlotsUsed) {
+            int slotID = itr.getFirst();
+            int slotQuantity = itr.getSecond();
             this->giveMessage(slotID, name, slotQuantity);
             this->item[slotID] = itemList.createItem(name);
             if (this->item[slotID]->getType() == "NONTOOL") {
