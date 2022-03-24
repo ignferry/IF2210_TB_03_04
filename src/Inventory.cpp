@@ -157,7 +157,7 @@ void Inventory::give(string name, int quantity, ItemList& itemList) {
     // Command gagal jika masih ada sejumlah item yang belum teralokasi suatu slot
     if (quantity != 0) {
         // throw Exception
-        cout << "Inventory penuh";
+        cout << "Inventory tidak cukup untuk menampung item tersebut" << endl;
     }
     else {
         // Memberikan item ke slot sesuai dengan proses sebelumnya
@@ -185,8 +185,10 @@ void Inventory::discard(string strInventorySlotID, int quantity) {
         } else if (this->item[inventorySlotID]->getQuantity() == quantity) {
             cout << "Berhasil menghapus item " << this->item[inventorySlotID]->getName() << " pada slot ID inventory ke-" << inventorySlotID << endl;
             this->deleteItem(inventorySlotID);
+        } else if (this->isEmptySlot(inventorySlotID)) {
+            cout << "Slot ID inventory ini kosong" << endl;
         } else {
-            cout << "Gagal membuang item" << endl;
+            cout << "Nilai masukan melebihi jumlah item yang tersedia" << endl;
         }
     } else {
         cout << "Masukan tidak valid" << endl;

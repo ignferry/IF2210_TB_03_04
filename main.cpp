@@ -40,9 +40,6 @@ int main()
       Export ekspor(fileName, &inventory);
 
       cout << "Semua item pada inventory berhasil di export ke file " << fileName << endl;
-      cout << stuff1 << endl;
-      cout << "+" << stuff2 << "+" << endl;
-      cout << "| COMMAND : ";
     }
     else if (command == "SHOW")
     {
@@ -50,9 +47,6 @@ int main()
       craftTable.showCraftTable();
       cout << "INVENTORY" << endl;
       inventory.showInventory();
-      cout << stuff1 << endl;
-      cout << "+" << stuff2 << "+" << endl;
-      cout << "| COMMAND : ";
     }
     else if (command == "GIVE")
     {
@@ -60,9 +54,6 @@ int main()
       int itemQty;
       cin >> itemName >> itemQty;
       inventory.give(itemName, itemQty, itemList);
-      cout << stuff1 << endl;
-      cout << "+" << stuff2 << "+" << endl;
-      cout << "| COMMAND : ";
     }
     else if (command == "DISCARD")
     {
@@ -70,9 +61,6 @@ int main()
       int itemQty;
       cin >> inventorySlotID >> itemQty;
       inventory.discard(inventorySlotID, itemQty);
-      cout << stuff1 << endl;
-      cout << "+" << stuff2 << "+" << endl;
-      cout << "| COMMAND : ";
     }
     else if (command == "MOVE")
     {
@@ -84,35 +72,35 @@ int main()
       int row, col;
       if (slotSrc[0] == 'I')
       {
-        for (int i = 0; i < slotQty; i++)
-        {
-          cin >> target;
-          int qty;
-          cin >> qty;
-          row = (target[1] - '0') / 3;
-          col = (target[1] - '0') % 3;
-          if (target[0] == 'C')
+        if (slotQty > 1) {
+          for (int i = 0; i < slotQty; i++)
           {
-            craftTable.addItem(inventory.get_items()[slotInt], row, col, qty);
-            cout << qty << " "
-                 << inventory.get_items()[slotInt]->getName() << " berhasil ditambahkan ke Crafting Table slot ke-" << target[1] - '0' << endl;
-            if (inventory.get_items()[slotInt]->getType() == "TOOL")
-            {
-              inventory.deleteItem(slotInt);
-            }
-            else
-            {
-              inventory.get_items()[slotInt]->addQuantity(-1 * qty);
-              if (inventory.get_items()[slotInt]->getQuantity() == 0)
+            cin >> target;
+            int qty;
+            cin >> qty;
+            row = (target[1] - '0') / 3;
+            col = (target[1] - '0') % 3;
+
+              craftTable.addItem(inventory.get_items()[slotInt], row, col, qty);
+              cout << qty << " "
+                  << inventory.get_items()[slotInt]->getName() << " berhasil ditambahkan ke Crafting Table slot ke-" << target[1] - '0' << endl;
+              if (inventory.get_items()[slotInt]->getType() == "TOOL")
               {
                 inventory.deleteItem(slotInt);
               }
-            }
+              else
+              {
+                inventory.get_items()[slotInt]->addQuantity(-1 * qty);
+                if (inventory.get_items()[slotInt]->getQuantity() == 0)
+                {
+                  inventory.deleteItem(slotInt);
+                }
+              }
+
           }
-          else if (target[0] == 'I')
-          {
-            inventory.move(slotSrc, target);
-          }
+        } else if (slotQty == 1) {
+          cin >> target;
+          inventory.move(slotSrc, target);
         }
       }
       else if (slotSrc[0] == 'C')
@@ -136,18 +124,12 @@ int main()
         }
         cout << "Item berhasil dipindahkan" << endl;
       }
-      cout << stuff1 << endl;
-      cout << "+" << stuff2 << "+" << endl;
-      cout << "| COMMAND : ";
     }
     else if (command == "USE")
     {
       string inventorySlotID;
       cin >> inventorySlotID;
       inventory.use(inventorySlotID);
-      cout << stuff1 << endl;
-      cout << "+" << stuff2 << "+" << endl;
-      cout << "| COMMAND : ";
     }
     else if (command == "CRAFT")
     {
@@ -186,9 +168,6 @@ int main()
           cout << "Tidak ada item yang dapat dibuat sesuai Crafting Table!" << endl;
         }
       }
-      cout << stuff1 << endl;
-      cout << "+" << stuff2 << "+" << endl;
-      cout << "| COMMAND : ";
     }
     else if (command == "EXIT")
     {
@@ -200,10 +179,10 @@ int main()
     {
       // todo
       cout << "!!! INVALID COMMAND !!!" << endl;
-      cout << stuff1 << endl;
-      cout << "+" << stuff2 << "+" << endl;
-      cout << "| COMMAND : ";
     }
+    cout << stuff1 << endl;
+    cout << "+" << stuff2 << "+" << endl;
+    cout << "| COMMAND : ";
   }
   return 0;
 }
