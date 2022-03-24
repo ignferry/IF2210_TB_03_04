@@ -61,7 +61,11 @@ int main()
       string inventorySlotID;
       int itemQty;
       cin >> inventorySlotID >> itemQty;
-      inventory.discard(inventorySlotID, itemQty);
+      if (inventorySlotID.at(0) == 'I') {
+        inventory.discard(inventorySlotID, itemQty);
+      } else {
+        cout << "Masukan inventory slot ID tidak valid" << endl;
+      }
     }
     else if (command == "MOVE")
     {
@@ -101,7 +105,11 @@ int main()
           }
         } else if (slotQty == 1) {
           cin >> target;
-          inventory.move(slotSrc, target);
+          if (target.at(0) == 'I') {
+            inventory.move(slotSrc, target);
+          } else {
+            cout << "Masukan slot ID dest tidak valid" << endl;
+          }
         }
       }
       else if (slotSrc[0] == 'C')
@@ -125,12 +133,20 @@ int main()
         }
         cout << "Item berhasil dipindahkan" << endl;
       }
+      else
+      {
+        cout << "Masukan slot ID src tidak valid" << endl;
+      }
     }
     else if (command == "USE")
     {
       string inventorySlotID;
       cin >> inventorySlotID;
-      inventory.use(inventorySlotID);
+      if (inventorySlotID.at(0) == 'I') {
+        inventory.use(inventorySlotID);
+      } else {
+        cout << "Masukan inventory slot ID tidak valid" << endl;
+      }
     }
     else if (command == "CRAFT")
     {
