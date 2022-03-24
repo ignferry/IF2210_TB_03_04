@@ -43,8 +43,8 @@ void Item::setQuantity(int quantity)
 
 string Item::getVariant() const
 {
-    throw Item_No_VariantException();
-    // return NULL;
+    // throw Item_No_VariantException();
+    return NULL;
 }
 
 void Item::setVariant(string Variant)
@@ -54,8 +54,8 @@ void Item::setVariant(string Variant)
 
 int Item::getDurability() const
 {
-    throw Item_No_DurabilityException();
-    // return 0;
+    // throw Item_No_DurabilityException();
+    return 0;
 }
 
 void Item::setDurability(int durability)

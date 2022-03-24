@@ -19,14 +19,14 @@ class ItemException {
 class Non_Tool_QuantityException : public ItemException {
     public:
         const char* what(){
-            return "Jumlah item harus antara 0 s.d 64 (inklusif)";
+            return "Jumlah item Non_Tool harus antara 0 s.d 64 (inklusif)";
         }
 };
 
 class Tool_QuantityException : public ItemException {
     public:
         const char* what(){
-            return "Jumlah item harus antara 0 s.d 1 (inklusif)";
+            return "Jumlah item Tool harus antara 0 s.d 1 (inklusif)";
         }
 };
 
