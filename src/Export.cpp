@@ -13,15 +13,15 @@ void Export::out() {
     ofstream outputFile(outputPath);
     int i = 0;
     Item** items = inventory->get_items();
-    while(i < 27 && !(inventory->isEmptySlot(i))) {
-        outputFile << items[i]->getID() << ":";
-        if(items[i]->getType() == "TOOL") outputFile << items[i]->getDurability() << endl;
-        else outputFile << items[i]->getQuantity() << endl;
-        i++;
-    }
     while(i < 27) {
-        outputFile << "0:0";
-        if(i != 26) outputFile << endl;
+        if(!(inventory->isEmptySlot(i))) {
+            outputFile << items[i]->getID() << ":";
+            if(items[i]->getType() == "TOOL") outputFile << items[i]->getDurability() << endl;
+            else outputFile << items[i]->getQuantity() << endl;
+        } else {
+            outputFile << "0:0" << endl;
+        }
         i++;
+        
     }
 }
