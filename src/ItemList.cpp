@@ -53,7 +53,7 @@ Item* ItemList::selectItem(string itemName) const {
             return itr;
         }
     }
-    // Mungkin nanti harus ada throw exception kalau tidak ketemu
+
     return nullptr;
 }
 
@@ -65,7 +65,6 @@ Item* ItemList::createItem(string itemName) {
         return item->deepCopy();
     }
     else {
-        // Mungkin nanti harus ada throw exception kalau tidak ketemu
         return nullptr;
     }
 }

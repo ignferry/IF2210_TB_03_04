@@ -1,5 +1,6 @@
 #include "../header/Inventory.hpp"
 #include "../header/Pair.hpp"
+#include "../header/Exception.hpp"
 
 Inventory::Inventory() {
     this->item = new Item*[INVENTORY_SLOT];
@@ -108,7 +109,14 @@ void Inventory::give(string name, int quantity, ItemList& itemList) {
 
     // Catat slot inventory yang mengandung item dengan nama name dan berapa quantity yang masih dapat ditampungnya
     // Hanya untuk NONTOOL
-    string itemType = itemList.selectItem(name)->getType();
+    Item* item = itemList.selectItem(name);
+
+    // Cek apakah ada item dengan nama name
+    if (item == nullptr) {
+        throw new NoSuchItemException(name);
+    }
+
+    string itemType = item->getType();
     vector<Pair<int, int>> sameNameSlots; // {slotID, quantity}
 
     if (itemType == "NONTOOL") {
@@ -157,8 +165,7 @@ void Inventory::give(string name, int quantity, ItemList& itemList) {
     
     // Command gagal jika masih ada sejumlah item yang belum teralokasi suatu slot
     if (quantity != 0) {
-        // throw Exception
-        cout << "Inventory tidak cukup untuk menampung item tersebut" << endl;
+        throw new InventoryFullException();
     }
     else {
         // Memberikan item ke slot sesuai dengan proses sebelumnya
@@ -184,14 +191,20 @@ void Inventory::discard(string strInventorySlotID, int quantity) {
     // Membuang quantity buah item dari slot inventory slotID
     int inventorySlotID = this->string_to_int(strInventorySlotID);
     if (inventorySlotID != -1) {
-        if (this->item[inventorySlotID]->getQuantity() > quantity) {
+        if (inventorySlotID < 0 || inventorySlotID > 26) {
+            // Cek apakah SlotID dalam rentang slot inventory
+            throw new OutOfInventoryBoundsException(inventorySlotID);
+        }
+        else if (this->isEmptySlot(inventorySlotID)) {
+             // Cek apakah slot kosong
+            throw new SlotEmptyException(strInventorySlotID);
+        }
+        else if (this->item[inventorySlotID]->getQuantity() > quantity) {
             cout << "Berhasil membuang item " << this->item[inventorySlotID]->getName() << " sebanyak " << quantity << " pada slot ID inventory ke-" << inventorySlotID << endl;
             this->subtractItem(inventorySlotID, quantity);
         } else if (this->item[inventorySlotID]->getQuantity() == quantity) {
             cout << "Berhasil menghapus item " << this->item[inventorySlotID]->getName() << " pada slot ID inventory ke-" << inventorySlotID << endl;
             this->deleteItem(inventorySlotID);
-        } else if (this->isEmptySlot(inventorySlotID)) {
-            cout << "Slot ID inventory ini kosong" << endl;
         } else {
             cout << "Nilai masukan melebihi jumlah item yang tersedia" << endl;
         }
@@ -203,6 +216,19 @@ void Inventory::discard(string strInventorySlotID, int quantity) {
 void Inventory::move(string strInventorySlotIDSrc, string strInventorySlotIDDest) {
     int inventorySlotIDSrc = this->string_to_int(strInventorySlotIDSrc);
     int inventorySlotIDDest = this->string_to_int(strInventorySlotIDDest);
+
+    // Cek apakah SlotID dalam rentang slot inventory
+    if (inventorySlotIDSrc < 0 || inventorySlotIDSrc > 26) {
+        throw new OutOfInventoryBoundsException(inventorySlotIDSrc);
+    }
+    if (inventorySlotIDDest < 0 || inventorySlotIDDest > 26) {
+        throw new OutOfInventoryBoundsException(inventorySlotIDDest);
+    }
+
+    // Cek apakah slot src kosong
+    if (this->isEmptySlot(inventorySlotIDSrc)) {
+        throw new SlotEmptyException(strInventorySlotIDSrc);
+    }
 
     // Pindahkan item secara keseluruhan ke slot baru jika slot destinasi kosong
     if (this->item[inventorySlotIDDest] == nullptr && inventorySlotIDDest != inventorySlotIDSrc) {
@@ -233,6 +259,15 @@ void Inventory::move(string strInventorySlotIDSrc, string strInventorySlotIDDest
 
 void Inventory::use(string strInventorySlotID) {
     int inventorySlotID = this->string_to_int(strInventorySlotID);
+
+    // Cek apakah SlotID dalam rentang slot inventory
+    if (inventorySlotID < 0 || inventorySlotID > 26) {
+        throw new OutOfInventoryBoundsException(inventorySlotID);
+    }
+    // Cek apakah slot kosong
+    if (this->isEmptySlot(inventorySlotID)) {
+        throw new SlotEmptyException(strInventorySlotID);
+    }
     if (this->item[inventorySlotID]->getType() == "TOOL") {
         cout << "Berhasil menggunakan item " << this->item[inventorySlotID]->getName() << endl;
         this->item[inventorySlotID]->subtractDurability(1);
@@ -240,10 +275,8 @@ void Inventory::use(string strInventorySlotID) {
             this->deleteItem(inventorySlotID);
         }
     } else if (this->item[inventorySlotID]->getType() == "NONTOOL") {
-        // Nanti Ganti jadi Exception
         cout << "Item " << this->item[inventorySlotID]->getName() << " tidak dapat digunakan karena bukan tool" << endl;
     } else {
-        // Nanti Ganti jadi Exception
         cout << "Tidak ada item yang dapat digunakan dalam slot ini" << endl;
     }
 }

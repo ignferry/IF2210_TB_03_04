@@ -9,6 +9,7 @@
 #include "./header/ItemException.hpp"
 #include "./header/ItemList.hpp"
 #include "./header/Pair.hpp"
+#include "./header/Exception.hpp"
 
 using namespace std;
 
@@ -33,197 +34,202 @@ int main()
   string command;
   while (cin >> command)
   {
-    cout << "+" << stuff2 << "+" << endl;
-    if (command == "EXPORT")
-    {
-      string fileName;
-      cin >> fileName;
-      Export ekspor(fileName, &inventory);
+    try {
+      cout << "+" << stuff2 << "+" << endl;
+      if (command == "EXPORT")
+      {
+        string fileName;
+        cin >> fileName;
+        Export ekspor(fileName, &inventory);
 
-      cout << "Semua item pada inventory berhasil di export ke file " << fileName << endl;
-    }
-    else if (command == "SHOW")
-    {
-      cout << stuff4 << "CRAFTING" << endl;
-      craftTable.showCraftTable();
-      cout << "INVENTORY" << endl;
-      inventory.showInventory();
-    }
-    else if (command == "GIVE")
-    {
-      string itemName;
-      int itemQty;
-      cin >> itemName >> itemQty;
-      inventory.give(itemName, itemQty, itemList);
-    }
-    else if (command == "DISCARD")
-    {
-      string inventorySlotID;
-      int itemQty;
-      cin >> inventorySlotID >> itemQty;
-      if (inventorySlotID.at(0) == 'I')
-      {
-        inventory.discard(inventorySlotID, itemQty);
+        cout << "Semua item pada inventory berhasil di export ke file " << fileName << endl;
       }
-      else
+      else if (command == "SHOW")
       {
-        cout << "Masukan inventory slot ID tidak valid" << endl;
+        cout << stuff4 << "CRAFTING" << endl;
+        craftTable.showCraftTable();
+        cout << "INVENTORY" << endl;
+        inventory.showInventory();
       }
-    }
-    else if (command == "MOVE")
-    {
-      string slotSrc;
-      int slotQty;
-      cin >> slotSrc >> slotQty;
-      int slotInt = stoi(slotSrc.substr(1, slotSrc.length()));
-      string target;
-      int row, col;
-      if (slotSrc[0] == 'I')
+      else if (command == "GIVE")
       {
-        for (int i = 0; i < slotQty; i++)
+        string itemName;
+        int itemQty;
+        cin >> itemName >> itemQty;
+        inventory.give(itemName, itemQty, itemList);
+      }
+      else if (command == "DISCARD")
+      {
+        string inventorySlotID;
+        int itemQty;
+        cin >> inventorySlotID >> itemQty;
+        if (inventorySlotID.at(0) == 'I')
         {
-          cin >> target;
-          if (target.at(0) == 'I')
-          {
-            inventory.move(slotSrc, target);
-          }
-          else if (target.at(0) == 'C')
-          {
-            int qty;
-            cin >> qty;
-            row = (target[1] - '0') / 3;
-            col = (target[1] - '0') % 3;
-            craftTable.addItem(inventory.get_items()[slotInt], row, col, qty);
-            cout << qty << " " << inventory.get_items()[slotInt]->getName() << " berhasil ditambahkan ke Crafting Table slot ke-" << target[1] - '0' << endl;
-            if (inventory.get_items()[slotInt]->getType() == "TOOL")
-            {
-              inventory.deleteItem(slotInt);
-            }
-            else
-            {
-              inventory.get_items()[slotInt]->addQuantity(-1 * qty);
-              if (inventory.get_items()[slotInt]->getQuantity() == 0)
-              {
-                inventory.deleteItem(slotInt);
-              }
-            }
-          }
-          else
-          {
-            cout << "Masukan slot ID dest tidak valid" << endl;
-          }
-        }
-      }
-      else if (slotSrc[0] == 'C')
-      {
-        cin >> target;
-        row = (slotInt) / 3;
-        col = (slotInt) % 3;
-        int targetInt = stoi(target.substr(1, target.length()));
-        if (inventory.isEmptySlot(targetInt))
-        {
-          inventory.addItem(targetInt, craftTable.getItem(row, col)->getName(), 1, itemList);
-        }
-        else if (inventory.get_items()[targetInt]->getName() == craftTable.getItem(row, col)->getName())
-        {
-          inventory.get_items()[targetInt]->addQuantity(1);
-        }
-        craftTable.getItem(row, col)->addQuantity(-1);
-        if (craftTable.getItem(row, col)->getQuantity() == 0)
-        {
-          craftTable.discardItem(row, col);
-        }
-        cout << "Item berhasil dipindahkan" << endl;
-      }
-      else
-      {
-        cout << "Masukan slot ID src tidak valid" << endl;
-      }
-    }
-    else if (command == "USE")
-    {
-      string inventorySlotID;
-      cin >> inventorySlotID;
-      if (inventorySlotID.at(0) == 'I')
-      {
-        inventory.use(inventorySlotID);
-      }
-      else
-      {
-        cout << "Masukan inventory slot ID tidak valid" << endl;
-      }
-    }
-    else if (command == "CRAFT")
-    {
-      if (craftTable.isAllTheSameTool() != "")
-      {
-        string itemName = craftTable.isAllTheSameTool();
-        int durabilitySum = craftTable.durabilitySum();
-        if (durabilitySum > 10)
-        {
-          inventory.give(itemName, 1, itemList);
+          inventory.discard(inventorySlotID, itemQty);
         }
         else
         {
-          for (int i = 0; i < INVENTORY_SLOT; i++)
+          cout << "Masukan inventory slot ID tidak valid" << endl;
+        }
+      }
+      else if (command == "MOVE")
+      {
+        string slotSrc;
+        int slotQty;
+        cin >> slotSrc >> slotQty;
+        int slotInt = stoi(slotSrc.substr(1, slotSrc.length()));
+        string target;
+        int row, col;
+        if (slotSrc[0] == 'I')
+        {
+          for (int i = 0; i < slotQty; i++)
           {
-            if (inventory.isEmptySlot(i))
+            cin >> target;
+            if (target.at(0) == 'I')
             {
-              inventory.addItem(i, itemName, 1, itemList);
-              inventory.get_items()[i]->setDurability(durabilitySum);
-              break;
+              inventory.move(slotSrc, target);
+            }
+            else if (target.at(0) == 'C')
+            {
+              int qty;
+              cin >> qty;
+              row = (target[1] - '0') / 3;
+              col = (target[1] - '0') % 3;
+              craftTable.addItem(inventory.get_items()[slotInt], row, col, qty);
+              cout << qty << " " << inventory.get_items()[slotInt]->getName() << " berhasil ditambahkan ke Crafting Table slot ke-" << target[1] - '0' << endl;
+              if (inventory.get_items()[slotInt]->getType() == "TOOL")
+              {
+                inventory.deleteItem(slotInt);
+              }
+              else
+              {
+                inventory.get_items()[slotInt]->addQuantity(-1 * qty);
+                if (inventory.get_items()[slotInt]->getQuantity() == 0)
+                {
+                  inventory.deleteItem(slotInt);
+                }
+              }
+            }
+            else
+            {
+              cout << "Masukan slot ID dest tidak valid" << endl;
             }
           }
         }
+        else if (slotSrc[0] == 'C')
+        {
+          cin >> target;
+          row = (slotInt) / 3;
+          col = (slotInt) % 3;
+          int targetInt = stoi(target.substr(1, target.length()));
+          if (inventory.isEmptySlot(targetInt))
+          {
+            inventory.addItem(targetInt, craftTable.getItem(row, col)->getName(), 1, itemList);
+          }
+          else if (inventory.get_items()[targetInt]->getName() == craftTable.getItem(row, col)->getName())
+          {
+            inventory.get_items()[targetInt]->addQuantity(1);
+          }
+          craftTable.getItem(row, col)->addQuantity(-1);
+          if (craftTable.getItem(row, col)->getQuantity() == 0)
+          {
+            craftTable.discardItem(row, col);
+          }
+          cout << "Item berhasil dipindahkan" << endl;
+        }
+        else
+        {
+          cout << "Masukan slot ID src tidak valid" << endl;
+        }
       }
-      else
+      else if (command == "USE")
+      {
+        string inventorySlotID;
+        cin >> inventorySlotID;
+        if (inventorySlotID.at(0) == 'I')
+        {
+          inventory.use(inventorySlotID);
+        }
+        else
+        {
+          cout << "Masukan inventory slot ID tidak valid" << endl;
+        }
+      }
+      else if (command == "CRAFT")
+      {
+        if (craftTable.isAllTheSameTool() != "")
+        {
+          string itemName = craftTable.isAllTheSameTool();
+          int durabilitySum = craftTable.durabilitySum();
+          if (durabilitySum > 10)
+          {
+            inventory.give(itemName, 1, itemList);
+          }
+          else
+          {
+            for (int i = 0; i < INVENTORY_SLOT; i++)
+            {
+              if (inventory.isEmptySlot(i))
+              {
+                inventory.addItem(i, itemName, 1, itemList);
+                inventory.get_items()[i]->setDurability(durabilitySum);
+                break;
+              }
+            }
+          }
+        }
+        else
+        {
+          Pair<string, int> a = recipeList.searchCraftableItem(craftTable);
+          if (a.getFirst() != "NONE")
+          {
+            // craftTable.resetCraftTable();
+            craftTable.substractQtyCraftTable();
+            inventory.give(a.getFirst(), a.getSecond(), itemList);
+          }
+          else
+          {
+            cout << "Tidak ada item yang dapat dibuat sesuai Crafting Table!" << endl;
+          }
+        }
+      }
+      else if (command == "MULTIPLECRAFTING")
       {
         Pair<string, int> a = recipeList.searchCraftableItem(craftTable);
+        int qty = 0;
         if (a.getFirst() != "NONE")
         {
-          // craftTable.resetCraftTable();
+          qty++;
           craftTable.substractQtyCraftTable();
-          inventory.give(a.getFirst(), a.getSecond(), itemList);
+          Pair<string, int> b = recipeList.searchCraftableItem(craftTable);
+          while (a.getFirst() == b.getFirst())
+          {
+            qty++;
+            craftTable.substractQtyCraftTable();
+            b = recipeList.searchCraftableItem(craftTable);
+          }
+
+          inventory.give(a.getFirst(), a.getSecond() * qty, itemList);
         }
         else
         {
           cout << "Tidak ada item yang dapat dibuat sesuai Crafting Table!" << endl;
         }
       }
-    }
-    else if (command == "MULTIPLECRAFTING")
-    {
-      Pair<string, int> a = recipeList.searchCraftableItem(craftTable);
-      int qty = 0;
-      if (a.getFirst() != "NONE")
+      else if (command == "EXIT")
       {
-        qty++;
-        craftTable.substractQtyCraftTable();
-        Pair<string, int> b = recipeList.searchCraftableItem(craftTable);
-        while (a.getFirst() == b.getFirst())
-        {
-          qty++;
-          craftTable.substractQtyCraftTable();
-          b = recipeList.searchCraftableItem(craftTable);
-        }
-
-        inventory.give(a.getFirst(), a.getSecond() * qty, itemList);
+        cout << stuff1 << endl;
+        cout << stuff5 << "!!! THANK YOU FOR PLAYING !!!" << endl;
+        break;
       }
       else
       {
-        cout << "Tidak ada item yang dapat dibuat sesuai Crafting Table!" << endl;
+        // todo
+        cout << "!!! INVALID COMMAND !!!" << endl;
       }
     }
-    else if (command == "EXIT")
-    {
-      cout << stuff1 << endl;
-      cout << stuff5 << "!!! THANK YOU FOR PLAYING !!!" << endl;
-      break;
-    }
-    else
-    {
-      // todo
-      cout << "!!! INVALID COMMAND !!!" << endl;
+    catch (Exception* e) {
+      cout << e->what();
     }
     cout << stuff1 << endl;
     cout << "+" << stuff2 << "+" << endl;
