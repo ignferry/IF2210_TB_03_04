@@ -146,19 +146,33 @@ void Crafting::addItem(Item *I, int row, int col, int qty)
     }
     else
     {
-        if (isSlotEmpty(row, col))
+        try
         {
-            this->craftArr[row][col] = I->deepCopy();
-            this->craftArr[row][col]->addQuantity(qty - this->craftArr[row][col]->getQuantity());
+            if (isSlotEmpty(row, col))
+            {
+                this->craftArr[row][col] = I->deepCopy();
+                this->craftArr[row][col]->addQuantity(qty - this->craftArr[row][col]->getQuantity());
+            }
+            else if (this->craftArr[row][col]->getName() == I->getName())
+            {
+                this->craftArr[row][col]->addQuantity(qty);
+            }
+            else
+            {
+                throw new CraftingSlotFillWithDifferentItem(row * 3 + col);
+            }
         }
-        else if (this->craftArr[row][col]->getName() == I->getName())
+        catch(Item_No_QuantityException& e)
         {
-            this->craftArr[row][col]->addQuantity(qty);
+            cout << e.what() << endl;
         }
-        else
-        {
-            throw new CraftingSlotFillWithDifferentItem(row * 3 + col);
+        catch(Tool_QuantityException& e){
+            cout << e.what() << endl;
         }
+        catch(Non_Tool_QuantityException& e){
+            cout << e.what() << endl;
+        }
+        
     }
     this->checkCol();
     this->checkRow();
@@ -364,11 +378,24 @@ void Crafting::substractQtyCraftTable()
         {
             if (this->craftArr[i][j] != NULL)
             {
-                this->craftArr[i][j]->addQuantity(-1);
-                if (this->craftArr[i][j]->getQuantity() == 0)
-                {
-                    this->discardItem(i, j);
+                try{
+                    this->craftArr[i][j]->subtractQuantity(1);
+                    if (this->craftArr[i][j]->getQuantity() == 0)
+                    {
+                        this->discardItem(i, j);
+                    }
                 }
+                catch(Item_No_QuantityException& e)
+                {
+                    cout << e.what() << endl;
+                }
+                catch(Tool_QuantityException& e){
+                    cout << e.what() << endl;
+                }
+                catch(Non_Tool_QuantityException& e){
+                    cout << e.what() << endl;
+                }
+                
             }
         }
     }

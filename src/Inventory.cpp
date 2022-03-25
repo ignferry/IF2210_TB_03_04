@@ -25,7 +25,21 @@ void Inventory::addItem(int inventorySlotID, string name, int quantity, ItemList
 }
 
 void Inventory::subtractItem(int inventorySlotID, int quantity) {
-    this->item[inventorySlotID]->subtractQuantity(quantity);
+    try
+    {
+        this->item[inventorySlotID]->subtractQuantity(quantity);
+    }
+    catch(Item_No_QuantityException& e)
+    {
+        cout << e.what() << endl;
+    }
+    catch(Tool_QuantityException& e){
+        cout << e.what() << endl;
+    }
+    catch(Non_Tool_QuantityException& e){
+        cout << e.what() << endl;
+    }
+    
 }
 
 void Inventory::deleteItem(int inventorySlotID) {
@@ -239,16 +253,29 @@ void Inventory::move(string strInventorySlotIDSrc, string strInventorySlotIDDest
     // Item pada slot destinasi sama dengan item pada slot sumber dan jenis item NONTOOL
     else if (this->item[inventorySlotIDSrc]->getName() == this->item[inventorySlotIDDest]->getName() && this->item[inventorySlotIDSrc]->getType() == "NONTOOL") {
         if (!this->isFullSlot(inventorySlotIDDest)) {
-            if (this->item[inventorySlotIDSrc]->getQuantity() > this->remainingSlot(inventorySlotIDDest)) {
-                cout << "Berhasil menumpuk item " << this->item[inventorySlotIDDest]->getName() << " sebanyak " << this->remainingSlot(inventorySlotIDDest) << " pada slot ID inventory ke-" << inventorySlotIDDest << endl;
-                this->item[inventorySlotIDSrc]->subtractQuantity(this->remainingSlot(inventorySlotIDDest));
-                this->item[inventorySlotIDDest]->setQuantity(MAX_ITEM);
-                cout << "Tersisa " << this->item[inventorySlotIDSrc]->getQuantity() << " " << this->item[inventorySlotIDSrc]->getName() << " pada slot ID inventory ke-" << inventorySlotIDSrc << endl;
-            } else {
-                cout << "Berhasil menumpuk item " << this->item[inventorySlotIDDest]->getName() << " pada slot ID inventory ke-" << inventorySlotIDDest << endl;
-                this->item[inventorySlotIDDest]->addQuantity(this->item[inventorySlotIDSrc]->getQuantity());
-                this->deleteItem(inventorySlotIDSrc);
+            try{
+                if (this->item[inventorySlotIDSrc]->getQuantity() > this->remainingSlot(inventorySlotIDDest)) {
+                    cout << "Berhasil menumpuk item " << this->item[inventorySlotIDDest]->getName() << " sebanyak " << this->remainingSlot(inventorySlotIDDest) << " pada slot ID inventory ke-" << inventorySlotIDDest << endl;
+                    this->item[inventorySlotIDSrc]->subtractQuantity(this->remainingSlot(inventorySlotIDDest));
+                    this->item[inventorySlotIDDest]->setQuantity(MAX_ITEM);
+                    cout << "Tersisa " << this->item[inventorySlotIDSrc]->getQuantity() << " " << this->item[inventorySlotIDSrc]->getName() << " pada slot ID inventory ke-" << inventorySlotIDSrc << endl;
+                } else {
+                    cout << "Berhasil menumpuk item " << this->item[inventorySlotIDDest]->getName() << " pada slot ID inventory ke-" << inventorySlotIDDest << endl;
+                    this->item[inventorySlotIDDest]->addQuantity(this->item[inventorySlotIDSrc]->getQuantity());
+                    this->deleteItem(inventorySlotIDSrc);
+                }
             }
+            catch(Item_No_QuantityException& e)
+            {
+                cout << e.what() << endl;
+            }
+            catch(Tool_QuantityException& e){
+                cout << e.what() << endl;
+            }
+            catch(Non_Tool_QuantityException& e){
+                cout << e.what() << endl;
+            }
+            
         } else {
             cout << "Destinasi slot ID inventory sudah penuh" << endl;
         }
@@ -269,10 +296,19 @@ void Inventory::use(string strInventorySlotID) {
         throw new SlotEmptyException(strInventorySlotID);
     }
     if (this->item[inventorySlotID]->getType() == "TOOL") {
-        cout << "Berhasil menggunakan item " << this->item[inventorySlotID]->getName() << endl;
-        this->item[inventorySlotID]->subtractDurability(1);
-        if (this->item[inventorySlotID]->getDurability() == 0) {
-            this->deleteItem(inventorySlotID);
+        try{
+            cout << "Berhasil menggunakan item " << this->item[inventorySlotID]->getName() << endl;
+            this->item[inventorySlotID]->subtractDurability(1);
+            if (this->item[inventorySlotID]->getDurability() == 0) {
+                this->deleteItem(inventorySlotID);
+            }
+        }
+        catch(Item_No_DurabilityException& e)
+        {
+            cout << e.what() << endl;
+        }
+        catch(Tool_DurabilityException& e){
+            cout << e.what() << endl;
         }
     } else if (this->item[inventorySlotID]->getType() == "NONTOOL") {
         cout << "Item " << this->item[inventorySlotID]->getName() << " tidak dapat digunakan karena bukan tool" << endl;

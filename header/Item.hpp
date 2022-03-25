@@ -4,7 +4,7 @@
 #include <iostream>
 using namespace std;
 #define MAX_DURABILITY 10
-
+#include "ItemException.hpp"
 class Item
 {
 private:

@@ -1,5 +1,4 @@
 #include "../header/Item.hpp"
-#include "../header/ItemException.hpp"
 
 /* 1.ITEM MODULE Implementations */
 Item::Item()
