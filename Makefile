@@ -18,7 +18,7 @@ run:
 
 # Test
 test: $(TC_FOLDER)/*.$(EXT_IN)
-	for inputfile in $(TC_FOLDER)/*.$(EXT_IN); do \
+	foreach inputfile in $(TC_FOLDER)/*.$(EXT_IN); do \
 		./$(EXECUTABLE_FILENAME) < $$inputfile; \
 	done;
 
