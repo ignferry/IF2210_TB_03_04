@@ -198,7 +198,7 @@ int main()
           }
         }
       }
-      else if (command == "MULTIPLECRAFTING")
+      else if (command == "MULTIPLECRAFT")
       {
         Pair<string, int> a = recipeList.searchCraftableItem(craftTable);
         int qty = 0;
@@ -221,6 +221,20 @@ int main()
           cout << "Tidak ada item yang dapat dibuat sesuai Crafting Table!" << endl;
         }
       }
+      else if (command == "HELP")
+      {
+        cout << "1. SHOW" << endl;
+        cout << "2. GIVE <ITEM_NAME> <ITEM_QTY>" << endl;
+        cout << "3. DISCARD <INVENTORY_SLOT_ID> <ITEM_QTY>" << endl;
+        cout << "4. MOVE <INVENTORY_SLOT_ID> N <CRAFTING_SLOT_ID_1> <ITEM_QTY_1> <CRAFTING_SLOT_ID_2> <ITEM_QTY_2> ... <CRAFTING_SLOT_ID_N> <ITEM_QTY_N>" << endl;
+        cout << "5. MOVE <INVENTORY_SLOT_ID_SRC> 1 <INVENTORY_SLOT_ID_DEST>" << endl;
+        cout << "6. MOVE <CRAFTING_SLOT_ID> 1 <INVENTORY_SLOT_ID>" << endl;
+        cout << "7. USE <INVENTORY_SLOT_ID>" << endl;
+        cout << "8. CRAFT" << endl;
+        cout << "9. MULTIPLECRAFT" << endl;
+        cout << "10. EXPORT <NAMA_FILE>" << endl;
+        cout << "11. EXIT" << endl;
+      }
       else if (command == "EXIT")
       {
         cout << stuff1 << endl;
@@ -231,6 +245,7 @@ int main()
       {
         // todo
         cout << "!!! INVALID COMMAND !!!" << endl;
+        cout << "Masukkan command HELP untuk melihat daftar command yang ada dalam program ini" << endl;
       }
     }
     catch (Exception *e)
