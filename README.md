@@ -1,26 +1,28 @@
-# Minecraft-Template
+# Tugas Besar 1 IF2210/Pemrograman Berorientasi Objek
+Membuat aplikasi berbasis Command Line Interface (CLI) untuk melakukan crafting seperti pada game Minecraft dalam bahasa C++.
 
-Template repository for Tubes 1 IF2210 2021/2022. Feel free to replace this README with your own content.
+## Struktur Repositori
+Repositori ini terdiri dari:
+- config folder yang berisi semua file config (item dan recipe)
+- tests folder yang berisi hasil export dari program
+- header folder yang berisi header dari setiap kelas yang dibuat
+- src folder yang berisi implementasi dari setiap kelas yang dibuat
+- main.cpp yang berisi kode utama program
+- makefile untuk proses compiling dan testing
 
-## What's Inside
-This template consists of:
-- config folder containing all the config files (items and recipes)
-- tests folder containing two sample test files (input and answer)
-- main.cpp containing the sample main code
-- check.cpp containing the code for checking
-- makefile for compiling and testing
+## Menggunakan Makefile
 
-## Running the Makefile
-Make sure you are using Linux with C++17. WSL also works if you are using Windows.
-```
-sudo apt-get install make g++
-make all
-```
-Using the sample main file, it should return that 1 out of 2 tests passed.
+## Menjalankan Program
+1. Pastikan Makefile sudah dapat digunakan.
+2. Ketikkan "compile make run" untuk meng-compile dan menjalankan program.
+3. Program dapat digunakan dengan mengetikkan command dan perintah yang diinginkan.
+4. Gunakan command "EXIT" untuk keluar dari program.
 
-## Adding More Tests
-You can add more tests by adding more files to the tests folder. Tests consists of two files, input with "in" extension and answer with "ans" extension. Each test should have exactly one EXPORT command which exports the current inventory into an "out" file in the tests folder. Please refer to the sample tests. Checking will be done by comparing the answer file and the output file.
-
-As the test is done by comparing the output files, you can freely use standard output in your program.
-
-Automated testing will not work if you are using GUI (obviously).
+## Author
+| NIM      | Nama                        |
+| -------- | ----------------------------
+| 13520021 | Gede Sumerta Yoga           |
+| 13520033 | Tri Sulton Adila            |
+| 13520090 | Rahmat Rafid Akbar          |
+| 13520123 | Johannes Winson Sukiatmodjo |
+| 13520126 | Ignasius Ferry Priguna      |
