@@ -29,15 +29,9 @@ void Inventory::subtractItem(int inventorySlotID, int quantity) {
     {
         this->item[inventorySlotID]->subtractQuantity(quantity);
     }
-    catch(Item_No_QuantityException& e)
+    catch(Exception* e)
     {
-        cout << e.what() << endl;
-    }
-    catch(Tool_QuantityException& e){
-        cout << e.what() << endl;
-    }
-    catch(Non_Tool_QuantityException& e){
-        cout << e.what() << endl;
+        cout << e->what() << endl;
     }
     
 }
@@ -267,15 +261,9 @@ void Inventory::move(string strInventorySlotIDSrc, string strInventorySlotIDDest
                     this->deleteItem(inventorySlotIDSrc);
                 }
             }
-            catch(Item_No_QuantityException& e)
+            catch(Exception* e)
             {
-                cout << e.what() << endl;
-            }
-            catch(Tool_QuantityException& e){
-                cout << e.what() << endl;
-            }
-            catch(Non_Tool_QuantityException& e){
-                cout << e.what() << endl;
+                cout << e->what() << endl;
             }
             
         } else {
@@ -305,13 +293,11 @@ void Inventory::use(string strInventorySlotID) {
                 this->deleteItem(inventorySlotID);
             }
         }
-        catch(Item_No_DurabilityException& e)
+        catch(Exception* e)
         {
-            cout << e.what() << endl;
+            cout << e->what() << endl;
         }
-        catch(Tool_DurabilityException& e){
-            cout << e.what() << endl;
-        }
+
     } else if (this->item[inventorySlotID]->getType() == "NONTOOL") {
         cout << "Item " << this->item[inventorySlotID]->getName() << " tidak dapat digunakan karena bukan tool" << endl;
     } else {

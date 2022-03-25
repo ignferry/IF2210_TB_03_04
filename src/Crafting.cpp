@@ -162,15 +162,9 @@ void Crafting::addItem(Item *I, int row, int col, int qty)
                 throw new CraftingSlotFillWithDifferentItem(row * 3 + col);
             }
         }
-        catch(Item_No_QuantityException& e)
+        catch(Exception* e)
         {
-            cout << e.what() << endl;
-        }
-        catch(Tool_QuantityException& e){
-            cout << e.what() << endl;
-        }
-        catch(Non_Tool_QuantityException& e){
-            cout << e.what() << endl;
+            cout << e->what() << endl;
         }
         
     }
@@ -385,15 +379,9 @@ void Crafting::substractQtyCraftTable()
                         this->discardItem(i, j);
                     }
                 }
-                catch(Item_No_QuantityException& e)
+                catch(Exception* e)
                 {
-                    cout << e.what() << endl;
-                }
-                catch(Tool_QuantityException& e){
-                    cout << e.what() << endl;
-                }
-                catch(Non_Tool_QuantityException& e){
-                    cout << e.what() << endl;
+                    cout << e->what() << endl;
                 }
                 
             }

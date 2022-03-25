@@ -11,6 +11,36 @@ public:
     virtual const string what() = 0;
 };
 
+class Non_Tool_QuantityException : public Exception {
+    public:
+        const string what();
+};
+
+class Tool_QuantityException : public Exception {
+    public:
+        const string what();
+};
+
+class Tool_DurabilityException : public Exception {
+    public:
+        const string what();
+};
+
+class Item_No_DurabilityException : public Exception {
+    public:
+        const string what();
+};
+
+class Item_No_QuantityException : public Exception {
+    public:
+        const string what();
+};
+
+class Item_No_VariantException : public Exception {
+    public:
+        const string what();
+};
+
 class NoSuchItemException : public Exception
 {
 private:
