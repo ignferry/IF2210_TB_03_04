@@ -69,21 +69,6 @@ Item* ItemList::createItem(string itemName) {
     }
 }
 
-Item* ItemList::createItem(string itemName, int quantity) {
-// Mengembalikan pointer to objek baru Item dengan nama itemName dengan jumlah quantity
-// Hanya dapat digunakan untuk item non tool
-// Jika item bertipe tool akan mengembalikan nullptr
-    Item* item = this->createItem(itemName);
-    if (item->getType() == "NONTOOL") {
-        item->setQuantity(quantity);
-        return item;
-    }
-    else {
-        delete item;
-        return nullptr;
-    }
-}
-
 void ItemList::printItems() const {
 // Print ID, nama, dan tipe semua item yang ada di itemList
     for (auto itr : this->items) {

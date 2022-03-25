@@ -72,6 +72,16 @@ int main()
           cout << "Masukan inventory slot ID tidak valid" << endl;
         }
       }
+      else if (command == "DISCARDALL") {
+        string inventorySlotID;
+        cin >> inventorySlotID;
+        if (inventorySlotID.at(0) == 'I') {
+          inventory.discard(inventorySlotID);
+        }
+        else {
+          cout << "Masukan inventory slot ID tidak valid" << endl;
+        }
+      }
       else if (command == "MOVE")
       {
         string slotSrc;

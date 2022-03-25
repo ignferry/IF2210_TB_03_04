@@ -187,13 +187,32 @@ void Inventory::give(string name, int quantity, ItemList& itemList) {
             int slotID = itr.getFirst();
             int slotQuantity = itr.getSecond();
             this->giveMessage(slotID, name, slotQuantity);
+            this->item[slotID] = itemList.createItem(name);
             if (this->item[slotID]->getType() == "NONTOOL") {
-                this->item[slotID] = itemList.createItem(name, slotQuantity);
-            }
-            else {
-                this->item[slotID] = itemList.createItem(name);
+                this->item[slotID]->setQuantity(slotQuantity);
             }
         }
+    }
+}
+
+void Inventory::discard(string strInventorySlotID) {
+    // Membuang seluruh item dari slot inventory slotID
+    int inventorySlotID = this->string_to_int(strInventorySlotID);
+    if (inventorySlotID != -1) {
+        if (inventorySlotID < 0 || inventorySlotID > 26) {
+            // Cek apakah SlotID dalam rentang slot inventory
+            throw new OutOfInventoryBoundsException(inventorySlotID);
+        }
+        else if (this->isEmptySlot(inventorySlotID)) {
+             // Cek apakah slot kosong
+            throw new SlotEmptyException(strInventorySlotID);
+        }
+        else {
+            cout << "Berhasil menghapus item " << this->item[inventorySlotID]->getName() << " pada slot ID inventory ke-" << inventorySlotID << endl;
+            this->deleteItem(inventorySlotID);
+        }
+    } else {
+        cout << "Masukan tidak valid" << endl;
     }
 }
 
