@@ -1,32 +1,31 @@
-# Tugas Besar 1 IF2210/Pemrograman Berorientasi Objek
-Membuat aplikasi berbasis Command Line Interface (CLI) untuk melakukan crafting seperti pada game Minecraft dalam bahasa C++.
+# Tugas Besar 1 IF2210 Pemrograman Berorientasi Objek
+### Pembuatan aplikasi berbasis Command Line Interface (CLI) untuk melakukan _crafting_ seperti pada game Minecraft dalam bahasa C++
 
-## Struktur Repositori
-Repositori ini terdiri dari:
-- config folder yang berisi semua file config (item dan recipe)
-- tests folder yang berisi hasil export dari program
-- header folder yang berisi header dari setiap kelas yang dibuat
-- src folder yang berisi implementasi dari setiap kelas yang dibuat
-- main.cpp yang berisi kode utama program
-- makefile untuk proses compiling dan testing
+## Struktur Directory
+- Folder `config` yang berisi semua file konfigurasi item dan recipe
+- Folder `header` yang berisi semua file header dari setiap kelas yang dibuat
+- Folder `src` yang berisi semua file implementasi dari setiap kelas yang dibuat
+- Folder `tests` yang berisi semua file dari hasil export atas pemanggilan command `EXPORT`
+- File `main.cpp` yang berisi kode utama dari program ini
+- File `Makefile` yang berisi beberapa argumen untuk proses compiling dan running
 
-## Requirement
-- Mingw-w54 versi terbaru. Instalasi dapat menggunakan [MSYS2](https://www.msys2.org/)
-- Tambahkan MSYS2 ke Windows PATH environment variable. Tutorial dapat dilihat di [sini](https://code.visualstudio.com/docs/cpp/config-mingw#_prerequisites)
-- Install Make dapat menggunakan tutorial di [sini](https://www.technewstoday.com/install-and-use-make-in-windows/)
+## Requirement Program
+- MinGW-w64 versi terbaru. Instalasi dapat menggunakan [MSYS2](https://www.msys2.org/).
+- Tambahkan MSYS2 ke Windows PATH environment variable. Untuk tutorialnya dapat dilihat di [sini](https://code.visualstudio.com/docs/cpp/config-mingw#_prerequisites).
+- Install Make. Untuk tutorialnya dapat dilihat di [sini](https://www.technewstoday.com/install-and-use-make-in-windows/).
 
-
-## Menjalankan Program
-1. Pastikan Makefile sudah dapat digunakan.
-2. Ketikkan "compile make run" untuk meng-compile dan menjalankan program.
-3. Program dapat digunakan dengan mengetikkan command dan perintah yang diinginkan.
-4. Gunakan command "EXIT" untuk keluar dari program.
+## Cara Menggunakan Program
+1. Clone repository ini
+2. Buka Command Prompt lalu arahkan ke folder repository ini
+3. Ketik `make all` untuk meng-_compile_ dan menjalankan program ini
+4. Masukkan command tertentu agar program dapat berjalan sesuai dengan perintah
+5. Gunakan command `EXIT` untuk mengakhiri program ini
 
 ## Author
-| NIM      | Nama                        |
-| -------- | ----------------------------
-| 13520021 | Gede Sumerta Yoga           |
-| 13520033 | Tri Sulton Adila            |
-| 13520090 | Rahmat Rafid Akbar          |
-| 13520123 | Johannes Winson Sukiatmodjo |
-| 13520126 | Ignasius Ferry Priguna      |
+| Nama                        | NIM      |
+| --------------------------- | -------- |
+| Gede Sumerta Yoga           | 13520021 |
+| Tri Sulton Adila            | 13520033 |
+| Rahmat Rafid Akbar          | 13520090 |
+| Johannes Winson Sukiatmodjo | 13520123 |
+| Ignasius Ferry Priguna      | 13520126 |

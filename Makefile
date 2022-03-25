@@ -6,14 +6,16 @@ EXT_ANS = ans
 EXECUTABLE_FILENAME = main
 ALL_SRCS := $(wildcard ./$(SRC_FOLDER)/*.cpp)
 
-all: compile test check
+all: compile run
 
 # Compile all cpp files except check.cpp
 compile:
 	g++ -std=c++17 main.cpp $(ALL_SRCS) -o $(EXECUTABLE_FILENAME)
 
+# Run the program
 run:
 	./main
+
 # Test
 test: $(TC_FOLDER)/*.$(EXT_IN)
 	for inputfile in $(TC_FOLDER)/*.$(EXT_IN); do \
