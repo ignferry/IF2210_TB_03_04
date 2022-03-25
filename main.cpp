@@ -212,8 +212,8 @@ int main()
           Pair<string, int> a = recipeList.searchCraftableItem(craftTable);
           if (a.getFirst() != "NONE")
           {
-            craftTable.substractQtyCraftTable();
             inventory.give(a.getFirst(), a.getSecond(), itemList);
+            craftTable.substractQtyCraftTable();
           }
           else
           {
@@ -224,20 +224,17 @@ int main()
       else if (command == "MULTIPLECRAFT")
       {
         Pair<string, int> a = recipeList.searchCraftableItem(craftTable);
-        int qty = 0;
         if (a.getFirst() != "NONE")
         {
-          qty++;
           craftTable.substractQtyCraftTable();
+          inventory.give(a.getFirst(), a.getSecond(), itemList);
           Pair<string, int> b = recipeList.searchCraftableItem(craftTable);
           while (a.getFirst() == b.getFirst())
           {
-            qty++;
+            inventory.give(a.getFirst(), a.getSecond(), itemList);
             craftTable.substractQtyCraftTable();
             b = recipeList.searchCraftableItem(craftTable);
           }
-
-          inventory.give(a.getFirst(), a.getSecond() * qty, itemList);
         }
         else
         {
