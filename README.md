@@ -10,7 +10,11 @@ Repositori ini terdiri dari:
 - main.cpp yang berisi kode utama program
 - makefile untuk proses compiling dan testing
 
-## Menggunakan Makefile
+## Requirement
+- Mingw-w54 versi terbaru. Instalasi dapat menggunakan [MSYS2](https://www.msys2.org/)
+- Tambahkan MSYS2 ke Windows PATH environment variable. Tutorial dapat dilihat di [sini](https://code.visualstudio.com/docs/cpp/config-mingw#_prerequisites)
+- Install Make dapat menggunakan tutorial di [sini](https://www.technewstoday.com/install-and-use-make-in-windows/)
+
 
 ## Menjalankan Program
 1. Pastikan Makefile sudah dapat digunakan.
