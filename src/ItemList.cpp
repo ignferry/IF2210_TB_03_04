@@ -76,6 +76,7 @@ Item* ItemList::createItem(string itemName, int quantity) {
     Item* item = this->createItem(itemName);
     if (item->getType() == "NONTOOL") {
         item->setQuantity(quantity);
+        return item;
     }
     else {
         delete item;
