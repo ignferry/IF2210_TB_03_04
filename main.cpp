@@ -138,11 +138,11 @@ int main()
         {
           row = (slotInt) / 3;
           col = (slotInt) % 3;
+          cin >> target;
           if (craftTable.isSlotEmpty(row, col))
           {
             throw new CraftingSlotEmpty(row * 3 + col);
           }
-          cin >> target;
           if (target.at(0) == 'I')
           {
             int targetInt = stoi(target.substr(1, target.length()));

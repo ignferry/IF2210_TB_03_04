@@ -92,5 +92,5 @@ CraftingSlotEmpty::CraftingSlotEmpty(int index)
 
 const string CraftingSlotEmpty::what()
 {
-    return "Slot C" + to_string(this->index) + " kosong";
+    return "Slot C" + to_string(this->index) + " kosong\n";
 }
