@@ -31,7 +31,7 @@ NoSuchItemException::NoSuchItemException(string itemName)
 
 const string NoSuchItemException::what()
 {
-    return "Tidak ditemukan item dengan nama " + this->itemName + "\n";
+    return "Tidak ada item dengan nama " + this->itemName + " dalam permainan ini\n";
 }
 
 SlotEmptyException::SlotEmptyException(string slotName)

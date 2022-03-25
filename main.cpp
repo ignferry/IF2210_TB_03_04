@@ -124,23 +124,27 @@ int main()
         else if (slotSrc[0] == 'C')
         {
           cin >> target;
-          row = (slotInt) / 3;
-          col = (slotInt) % 3;
-          int targetInt = stoi(target.substr(1, target.length()));
-          if (inventory.isEmptySlot(targetInt))
-          {
-            inventory.addItem(targetInt, craftTable.getItem(row, col)->getName(), 1, itemList);
+          if (target.at(0) == 'I') {
+            row = (slotInt) / 3;
+            col = (slotInt) % 3;
+            int targetInt = stoi(target.substr(1, target.length()));
+            cout << "Item " << craftTable.getItem(row, col)->getName() << " berhasil dipindahkan ke slot ID inventory ke-" << targetInt << endl;
+            if (inventory.isEmptySlot(targetInt))
+            {
+              inventory.addItem(targetInt, craftTable.getItem(row, col)->getName(), 1, itemList);
+            }
+            else if (inventory.get_items()[targetInt]->getName() == craftTable.getItem(row, col)->getName())
+            {
+              inventory.get_items()[targetInt]->addQuantity(1);
+            }
+            craftTable.getItem(row, col)->addQuantity(-1);
+            if (craftTable.getItem(row, col)->getQuantity() == 0)
+            {
+              craftTable.discardItem(row, col);
+            }
+          } else {
+            cout << "Masukan slot ID dest tidak valid" << endl;
           }
-          else if (inventory.get_items()[targetInt]->getName() == craftTable.getItem(row, col)->getName())
-          {
-            inventory.get_items()[targetInt]->addQuantity(1);
-          }
-          craftTable.getItem(row, col)->addQuantity(-1);
-          if (craftTable.getItem(row, col)->getQuantity() == 0)
-          {
-            craftTable.discardItem(row, col);
-          }
-          cout << "Item berhasil dipindahkan" << endl;
         }
         else
         {
