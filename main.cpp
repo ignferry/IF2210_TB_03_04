@@ -34,7 +34,8 @@ int main()
   string command;
   while (cin >> command)
   {
-    try {
+    try
+    {
       cout << "+" << stuff2 << "+" << endl;
       if (command == "EXPORT")
       {
@@ -78,6 +79,10 @@ int main()
         int slotQty;
         cin >> slotSrc >> slotQty;
         int slotInt = stoi(slotSrc.substr(1, slotSrc.length()));
+        if (inventory.isEmptySlot(slotInt))
+        {
+          throw new SlotEmptyException(slotSrc);
+        }
         string target;
         int row, col;
         if (slotSrc[0] == 'I')
@@ -85,6 +90,7 @@ int main()
           for (int i = 0; i < slotQty; i++)
           {
             cin >> target;
+            int targetInt = stoi(target.substr(1, target.length()));
             if (target.at(0) == 'I')
             {
               inventory.move(slotSrc, target);
@@ -93,8 +99,8 @@ int main()
             {
               int qty;
               cin >> qty;
-              row = (target[1] - '0') / 3;
-              col = (target[1] - '0') % 3;
+              row = (targetInt) / 3;
+              col = (targetInt) % 3;
               craftTable.addItem(inventory.get_items()[slotInt], row, col, qty);
               cout << qty << " " << inventory.get_items()[slotInt]->getName() << " berhasil ditambahkan ke Crafting Table slot ke-" << target[1] - '0' << endl;
               if (inventory.get_items()[slotInt]->getType() == "TOOL")
@@ -183,7 +189,6 @@ int main()
           Pair<string, int> a = recipeList.searchCraftableItem(craftTable);
           if (a.getFirst() != "NONE")
           {
-            // craftTable.resetCraftTable();
             craftTable.substractQtyCraftTable();
             inventory.give(a.getFirst(), a.getSecond(), itemList);
           }
@@ -228,7 +233,8 @@ int main()
         cout << "!!! INVALID COMMAND !!!" << endl;
       }
     }
-    catch (Exception* e) {
+    catch (Exception *e)
+    {
       cout << e->what();
     }
     cout << stuff1 << endl;

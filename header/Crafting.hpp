@@ -4,6 +4,7 @@
 #include <iomanip>
 #include "Item.hpp"
 #include "Recipe.hpp"
+#include "Exception.hpp"
 using namespace std;
 
 class Crafting

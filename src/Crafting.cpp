@@ -136,18 +136,32 @@ void Crafting::showCraftTable()
 
 void Crafting::addItem(Item *I, int row, int col, int qty)
 {
+    if (row > 2 || row < 0 || col > 2 || col < 0)
+    {
+        throw new OutOfCraftingBoundsException(row * 3 + col);
+    }
     if (I == nullptr)
     {
         this->craftArr[row][col] = nullptr;
     }
     else
     {
-        this->craftArr[row][col] = I->deepCopy();
-        this->craftArr[row][col]->addQuantity(qty - this->craftArr[row][col]->getQuantity());
+        if (isSlotEmpty(row, col))
+        {
+            this->craftArr[row][col] = I->deepCopy();
+            this->craftArr[row][col]->addQuantity(qty - this->craftArr[row][col]->getQuantity());
+        }
+        else if (this->craftArr[row][col]->getName() == I->getName())
+        {
+            this->craftArr[row][col]->addQuantity(qty);
+        }
+        else
+        {
+            throw new CraftingSlotFillWithDifferentItem(row * 3 + col);
+        }
     }
     this->checkCol();
     this->checkRow();
-    // I->addQuantity(-1);
 }
 
 void Crafting::discardItem(int row, int col)
