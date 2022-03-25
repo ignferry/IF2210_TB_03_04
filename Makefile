@@ -3,7 +3,7 @@ SRC_FOLDER = src
 EXT_IN = in
 EXT_OUT = out
 EXT_ANS = ans
-EXECUTABLE_FILENAME = main
+EXECUTABLE_FILENAME = main.exe
 ALL_SRCS := $(wildcard ./$(SRC_FOLDER)/*.cpp)
 
 all: compile run
@@ -18,7 +18,7 @@ run:
 
 # Test
 test: $(TC_FOLDER)/*.$(EXT_IN)
-	foreach inputfile in $(TC_FOLDER)/*.$(EXT_IN); do \
+	for inputfile in $(TC_FOLDER)/*.$(EXT_IN); do \
 		./$(EXECUTABLE_FILENAME) < $$inputfile; \
 	done;
 
