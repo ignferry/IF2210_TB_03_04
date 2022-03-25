@@ -35,7 +35,13 @@ class ItemList {
         Item* createItem(string itemName);
         // Mengembalikan pointer to objek baru Item dengan nama itemName
 
+        Item* createItem(string itemName, int quantity);
+        // Mengembalikan pointer to objek baru Item dengan nama itemName dengan jumlah quantity
+        // Hanya dapat digunakan untuk item non tool
+        // Jika item bertipe tool akan mengembalikan nullptr
+
         void printItems() const;
+        // Print ID, nama, dan tipe semua item yang ada di itemList
 };
 
 #endif
