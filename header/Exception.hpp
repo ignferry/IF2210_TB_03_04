@@ -11,34 +11,40 @@ public:
     virtual const string what() = 0;
 };
 
-class Non_Tool_QuantityException : public Exception {
-    public:
-        const string what();
+class Non_Tool_QuantityException : public Exception
+{
+public:
+    const string what();
 };
 
-class Tool_QuantityException : public Exception {
-    public:
-        const string what();
+class Tool_QuantityException : public Exception
+{
+public:
+    const string what();
 };
 
-class Tool_DurabilityException : public Exception {
-    public:
-        const string what();
+class Tool_DurabilityException : public Exception
+{
+public:
+    const string what();
 };
 
-class Item_No_DurabilityException : public Exception {
-    public:
-        const string what();
+class Item_No_DurabilityException : public Exception
+{
+public:
+    const string what();
 };
 
-class Item_No_QuantityException : public Exception {
-    public:
-        const string what();
+class Item_No_QuantityException : public Exception
+{
+public:
+    const string what();
 };
 
-class Item_No_VariantException : public Exception {
-    public:
-        const string what();
+class Item_No_VariantException : public Exception
+{
+public:
+    const string what();
 };
 
 class NoSuchItemException : public Exception
@@ -93,6 +99,16 @@ private:
 
 public:
     CraftingSlotFillWithDifferentItem(int index);
+    const string what();
+};
+
+class CraftingSlotEmpty : public Exception
+{
+private:
+    int index;
+
+public:
+    CraftingSlotEmpty(int index);
     const string what();
 };
 

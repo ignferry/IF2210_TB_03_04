@@ -72,13 +72,16 @@ int main()
           cout << "Masukan inventory slot ID tidak valid" << endl;
         }
       }
-      else if (command == "DISCARDALL") {
+      else if (command == "DISCARDALL")
+      {
         string inventorySlotID;
         cin >> inventorySlotID;
-        if (inventorySlotID.at(0) == 'I') {
+        if (inventorySlotID.at(0) == 'I')
+        {
           inventory.discard(inventorySlotID);
         }
-        else {
+        else
+        {
           cout << "Masukan inventory slot ID tidak valid" << endl;
         }
       }
@@ -88,14 +91,14 @@ int main()
         int slotQty;
         cin >> slotSrc >> slotQty;
         int slotInt = stoi(slotSrc.substr(1, slotSrc.length()));
-        if (inventory.isEmptySlot(slotInt))
-        {
-          throw new SlotEmptyException(slotSrc);
-        }
         string target;
         int row, col;
         if (slotSrc[0] == 'I')
         {
+          if (inventory.isEmptySlot(slotInt))
+          {
+            throw new SlotEmptyException(slotSrc);
+          }
           for (int i = 0; i < slotQty; i++)
           {
             cin >> target;
@@ -133,10 +136,15 @@ int main()
         }
         else if (slotSrc[0] == 'C')
         {
+          row = (slotInt) / 3;
+          col = (slotInt) % 3;
+          if (craftTable.isSlotEmpty(row, col))
+          {
+            throw new CraftingSlotEmpty(row * 3 + col);
+          }
           cin >> target;
-          if (target.at(0) == 'I') {
-            row = (slotInt) / 3;
-            col = (slotInt) % 3;
+          if (target.at(0) == 'I')
+          {
             int targetInt = stoi(target.substr(1, target.length()));
             cout << "Item " << craftTable.getItem(row, col)->getName() << " berhasil dipindahkan ke slot ID inventory ke-" << targetInt << endl;
             if (inventory.isEmptySlot(targetInt))
@@ -152,7 +160,9 @@ int main()
             {
               craftTable.discardItem(row, col);
             }
-          } else {
+          }
+          else
+          {
             cout << "Masukan slot ID dest tidak valid" << endl;
           }
         }

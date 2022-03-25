@@ -1,26 +1,32 @@
 #include "../header/Exception.hpp"
 
-const string Non_Tool_QuantityException::what(){
+const string Non_Tool_QuantityException::what()
+{
     return "Jumlah item Non_Tool harus antara 0 s.d 64 (inklusif)";
 }
 
-const string Tool_QuantityException::what(){
+const string Tool_QuantityException::what()
+{
     return "Jumlah item Tool harus antara 0 s.d 1 (inklusif)";
 }
 
-const string Tool_DurabilityException::what(){
+const string Tool_DurabilityException::what()
+{
     return "Durability item harus antara 0 s.d 10 (inklusif)";
 }
 
-const string Item_No_DurabilityException::what(){
+const string Item_No_DurabilityException::what()
+{
     return "Kelas Item tidak memiliki atribut Durability, adanya di kelas Tool";
 }
 
-const string Item_No_QuantityException::what(){
+const string Item_No_QuantityException::what()
+{
     return "Kelas Item tidak memiliki atribut Quantity, adanya di kelas Non_Tool";
 }
 
-const string Item_No_VariantException::what(){
+const string Item_No_VariantException::what()
+{
     return "Kelas Item tidak memiliki atribut Variant, adanya di kelas Non_Tool";
 }
 
@@ -77,4 +83,14 @@ CraftingSlotFillWithDifferentItem::CraftingSlotFillWithDifferentItem(int index)
 const string CraftingSlotFillWithDifferentItem::what()
 {
     return "Slot C" + to_string(this->index) + " sudah berisi item lain\n";
+}
+
+CraftingSlotEmpty::CraftingSlotEmpty(int index)
+{
+    this->index = index;
+}
+
+const string CraftingSlotEmpty::what()
+{
+    return "Slot C" + to_string(this->index) + " kosong";
 }
