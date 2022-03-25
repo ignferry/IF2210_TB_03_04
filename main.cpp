@@ -226,8 +226,8 @@ int main()
         Pair<string, int> a = recipeList.searchCraftableItem(craftTable);
         if (a.getFirst() != "NONE")
         {
-          craftTable.substractQtyCraftTable();
           inventory.give(a.getFirst(), a.getSecond(), itemList);
+          craftTable.substractQtyCraftTable();
           Pair<string, int> b = recipeList.searchCraftableItem(craftTable);
           while (a.getFirst() == b.getFirst())
           {
