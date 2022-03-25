@@ -193,9 +193,11 @@ void Inventory::give(string name, int quantity, ItemList& itemList) {
             int slotID = itr.getFirst();
             int slotQuantity = itr.getSecond();
             this->giveMessage(slotID, name, slotQuantity);
-            this->item[slotID] = itemList.createItem(name);
             if (this->item[slotID]->getType() == "NONTOOL") {
-                this->item[slotID]->setQuantity(slotQuantity);
+                this->item[slotID] = itemList.createItem(name, slotQuantity);
+            }
+            else {
+                this->item[slotID] = itemList.createItem(name);
             }
         }
     }
