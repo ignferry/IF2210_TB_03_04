@@ -239,14 +239,15 @@ int main()
         cout << "1. SHOW" << endl;
         cout << "2. GIVE <ITEM_NAME> <ITEM_QTY>" << endl;
         cout << "3. DISCARD <INVENTORY_SLOT_ID> <ITEM_QTY>" << endl;
-        cout << "4. MOVE <INVENTORY_SLOT_ID> N <CRAFTING_SLOT_ID_1> <ITEM_QTY_1> <CRAFTING_SLOT_ID_2> <ITEM_QTY_2> ... <CRAFTING_SLOT_ID_N> <ITEM_QTY_N>" << endl;
-        cout << "5. MOVE <INVENTORY_SLOT_ID_SRC> 1 <INVENTORY_SLOT_ID_DEST>" << endl;
-        cout << "6. MOVE <CRAFTING_SLOT_ID> 1 <INVENTORY_SLOT_ID>" << endl;
-        cout << "7. USE <INVENTORY_SLOT_ID>" << endl;
-        cout << "8. CRAFT" << endl;
-        cout << "9. MULTIPLECRAFT" << endl;
-        cout << "10. EXPORT <NAMA_FILE>" << endl;
-        cout << "11. EXIT" << endl;
+        cout << "4. DISCARDALL <INVENTORY_SLOT_ID>" << endl;
+        cout << "5. MOVE <INVENTORY_SLOT_ID> N <CRAFTING_SLOT_ID_1> <ITEM_QTY_1> <CRAFTING_SLOT_ID_2> <ITEM_QTY_2> ... <CRAFTING_SLOT_ID_N> <ITEM_QTY_N>" << endl;
+        cout << "6. MOVE <INVENTORY_SLOT_ID_SRC> 1 <INVENTORY_SLOT_ID_DEST>" << endl;
+        cout << "7. MOVE <CRAFTING_SLOT_ID> 1 <INVENTORY_SLOT_ID>" << endl;
+        cout << "8. USE <INVENTORY_SLOT_ID>" << endl;
+        cout << "9. CRAFT" << endl;
+        cout << "10. MULTIPLECRAFT" << endl;
+        cout << "11. EXPORT <NAMA_FILE>" << endl;
+        cout << "12. EXIT" << endl;
       }
       else if (command == "EXIT")
       {
